@@ -1,0 +1,58 @@
+/* Estilos específicos para la página de Reportes */
+
+#report-form .grid {
+    grid-template-columns: 1fr 1fr auto; /* Alinea el botón al final */
+    gap: 1rem;
+    align-items: flex-end; /* Alinea los elementos en la parte inferior */
+}
+
+#report-form button {
+    margin-bottom: 0; /* Pico.css a veces añade un margen a los botones en formularios */
+}
+
+/* --- Estilos para las Tarjetas de Resumen --- */
+.summary-card {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.summary-card header {
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--pico-secondary-foreground);
+    margin-bottom: 0.5rem;
+    padding: 0;
+    border: none;
+}
+
+.summary-card h2 {
+    margin: 0;
+    font-size: 2em;
+    color: var(--pico-primary);
+}
+
+/* Estilo específico para la tarjeta de ganancia */
+.summary-card.profit h2 {
+    color: var(--pico-color-green-550);
+}
+
+/* Estilo para la tabla de detalles */
+#details-section {
+    margin-top: 2rem;
+}
+
+
+/* --- VISTA MÓVIL --- */
+@media (max-width: 992px) {
+    #report-form .grid {
+        grid-template-columns: 1fr; /* Apila los campos y el botón */
+        gap: 1rem;
+    }
+    #report-form button {
+        width: 100%;
+    }
+    
+    #summary-section .grid {
+        grid-template-columns: 1fr;
+    }
+}

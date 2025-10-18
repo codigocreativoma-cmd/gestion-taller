@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Reparación - ServiTech</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" href="../css/custom.css">
+    <link rel="stylesheet" href="../css/reparacion.css">
+</head>
+<body class="reparacion-page">
+
+    <div class="overlay" id="overlay"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <header class="sidebar-header">
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo">
+        </header>
+        <ul class="sidebar-nav">
+            <li><a href="../index.html" class="active"><i data-feather="clipboard"></i> Órdenes</a></li>
+            <li><a href="inventario.html"><i data-feather="package"></i> Inventario</a></li>
+            <li><a href="proveedores.html"><i data-feather="truck"></i> Proveedores</a></li>
+            <li><a href="cuentas-pagar.html"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
+            <li><a href="caja.html"><i data-feather="dollar-sign"></i> Caja</a></li>
+            <li><a href="reportes.html"><i data-feather="bar-chart-2"></i> Reportes</a></li>
+            <li><a href="configuracion.html"><i data-feather="settings"></i> Configuración</a></li>
+        </ul>
+        <footer class="sidebar-footer">
+            <a href="#" id="logout-btn" role="button" class="contrast outline"><i data-feather="log-out"></i> Cerrar Sesión</a>
+        </footer>
+    </nav>
+
+    <div class="main-content">
+        <header class="top-header">
+            <button class="hamburger" id="hamburger-menu" aria-label="Abrir menú"><i data-feather="menu"></i></button>
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo">
+            <div class="mobile-header-actions"></div>
+        </header>
+
+        <main class="container">
+            <div class="page-header">
+                <h2>Gestión de Orden #<span id="orden-id-titulo">...</span></h2>
+                <a href="../index.html" role="button" class="secondary outline"><i data-feather="arrow-left"></i> Volver a la lista</a>
+            </div>
+
+            <div class="reparacion-grid">
+                <article id="info-section">
+                    <div aria-busy="true">Cargando información...</div>
+                </article>
+
+                <article id="actions-section">
+                    <form id="reparacion-form">
+                        <fieldset>
+                            <legend>Estado de la Reparación</legend>
+                            <label for="estado-select">Cambiar estado:</label>
+                            <select id="estado-select" name="estado">
+                                <option value="Recibido">Recibido</option>
+                                <option value="En Diagnóstico">En Diagnóstico</option>
+                                <option value="Esperando Aprobación de Cliente">Esperando Aprobación</option>
+                                <option value="Esperando Repuesto">Esperando Repuesto</option>
+                                <option value="En Reparación">En Reparación</option>
+                                <option value="Reparado">Reparado</option>
+                                <option value="Listo para Entrega">Listo para Entrega</option>
+                                <option value="Entregado">Entregado</option>
+                                <option value="Sin Solución">Sin Solución</option>
+                            </select>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Diagnóstico y Notas Técnicas</legend>
+                            <textarea id="diagnostico-tecnico" name="diagnostico_tecnico" rows="5" placeholder="Detalles técnicos de la falla..."></textarea>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Repuestos Utilizados</legend>
+                            <table class="striped">
+                                <thead><tr><th>Repuesto</th><th>Costo</th><th>Acción</th></tr></thead>
+                                <tbody id="used-parts-tbody"></tbody>
+                            </table>
+                            <p class="cost-summary"><strong>Costo Total de Repuestos:</strong> <span id="total-cost-span">$0.00</span></p>
+                            <div class="grid">
+                                <button type="button" id="add-from-inventory-btn" class="secondary outline"><i data-feather="package"></i> Añadir desde Inventario</button>
+                                <button type="button" id="add-manual-part-btn" class="secondary outline"><i data-feather="plus-circle"></i> Añadir Repuesto Manual</button>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Finalización</legend>
+                             <label for="precio-final">Precio Final para el Cliente</label>
+                            <input type="number" id="precio-final" name="precio_final" step="0.01" placeholder="0.00">
+                        </fieldset>
+                        <button type="submit" id="guardar-cambios-btn"><i data-feather="save"></i> Guardar Cambios</button>
+                        <button type="button" id="send-to-cashier-btn" class="contrast hidden"><i data-feather="shopping-cart"></i> Finalizar y Enviar a Caja</button>
+                    </form>
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <dialog id="inventory-modal">
+        <article>
+            <header><a href="#close" aria-label="Close" class="close js-close-modal"></a>Buscar y Añadir Repuesto</header>
+            <input type="search" id="inventory-search-input" placeholder="Buscar por nombre...">
+            <div id="inventory-search-results"></div>
+        </article>
+    </dialog>
+    <dialog id="manual-part-modal">
+        <article>
+            <header><a href="#close" aria-label="Close" class="close js-close-modal"></a>Añadir Repuesto Manual</header>
+            <form id="manual-part-form">
+                <label>Nombre del Repuesto<input type="text" name="nombre" required></label>
+                <label>Costo del Repuesto (Para el taller)<input type="number" name="costo" step="0.01" placeholder="0.00" required></label>
+                <footer>
+                    <button type="button" class="secondary js-close-modal">Cancelar</button>
+                    <button type="submit">Añadir</button>
+                </footer>
+            </form>
+        </article>
+    </dialog>
+    <dialog id="evidence-modal">
+        <article>
+             <header>
+                <a href="#close" aria-label="Close" class="close js-close-modal"></a>
+                Evidencia Fotográfica de Ingreso
+            </header>
+            <div id="evidence-modal-gallery" class="evidence-gallery"></div>
+        </article>
+    </dialog>
+    <dialog id="pattern-view-modal">
+        <article>
+             <header>
+                <a href="#close" aria-label="Close" class="close js-close-modal"></a>
+                Patrón de Desbloqueo Registrado
+            </header>
+            <div class="pattern-view-wrapper">
+                <div id="pattern-view-grid" class="pattern-grid-view">
+                    <div class="pattern-dot-view" data-id="1"></div><div class="pattern-dot-view" data-id="2"></div><div class="pattern-dot-view" data-id="3"></div>
+                    <div class="pattern-dot-view" data-id="4"></div><div class="pattern-dot-view" data-id="5"></div><div class="pattern-dot-view" data-id="6"></div>
+                    <div class="pattern-dot-view" data-id="7"></div><div class="pattern-dot-view" data-id="8"></div><div class="pattern-dot-view" data-id="9"></div>
+                </div>
+                <canvas id="pattern-view-canvas"></canvas>
+            </div>
+        </article>
+    </dialog>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="../js/reparacion.js"></script>
+</body>
+</html>

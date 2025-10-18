@@ -1,0 +1,129 @@
+/* Estilos específicos para la página de Caja / Punto de Venta */
+
+.pos-container {
+    display: grid;
+    grid-template-columns: 400px 1fr; /* Columna izquierda fija, derecha flexible */
+    gap: 2rem;
+    padding: 1.5rem 2rem !important;
+    height: calc(100vh - var(--header-height));
+    max-height: calc(100vh - var(--header-height));
+    overflow: hidden;
+}
+
+/* --- Panel Izquierdo: Búsqueda (CORREGIDO) --- */
+.pos-search-panel {
+    display: flex; /* Mantenemos flex para que el article ocupe todo el espacio */
+    flex-direction: column;
+    max-height: 100%;
+    overflow: hidden;
+}
+.pos-search-panel article {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+    flex-grow: 1;
+    /* Ya no necesita max-height: 50% */
+}
+.pos-search-panel article header {
+    flex-shrink: 0;
+}
+
+.list-container {
+    overflow-y: auto;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+}
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.list-item:hover {
+    background-color: var(--pico-muted-background-color);
+}
+.list-item:not(:last-child) {
+    border-bottom: 1px solid var(--pico-muted-border-color);
+}
+.list-item .info strong { display: block; }
+.list-item .info small { color: var(--pico-secondary-foreground); }
+.small-btn { padding: 0.25rem 0.5rem; font-size: 0.8em; }
+
+/* --- Panel Derecho: Ticket de Venta --- */
+.pos-ticket-panel article {
+    height: 100%;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+}
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ticket-header h6 {
+    margin-bottom: 0;
+}
+.ticket-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    position: relative;
+}
+.ticket-body .empty-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--pico-secondary-foreground);
+    text-align: center;
+}
+.ticket-body table { margin: 0; }
+.ticket-body td, .ticket-body th { vertical-align: middle; }
+.ticket-footer {
+    flex-shrink: 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--pico-border);
+}
+.totals {
+    margin-bottom: 1rem;
+}
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+    font-size: 1.1em;
+}
+.total-final {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--pico-primary);
+    border-top: 2px solid var(--pico-primary);
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+}
+#process-sale-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+
+/* --- VISTA MÓVIL --- */
+@media (max-width: 992px) {
+    .pos-container {
+        grid-template-columns: 1fr;
+        height: auto;
+        max-height: none;
+        overflow-y: auto;
+        gap: 1.5rem;
+    }
+
+    .pos-search-panel article {
+        max-height: 400px; /* Aumentamos un poco la altura máxima en móvil */
+    }
+}

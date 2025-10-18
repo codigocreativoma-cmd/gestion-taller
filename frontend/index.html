@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión - Taller</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <header class="sidebar-header">
+            <img src="img/logo.png" alt="Logo ServiTech" class="sidebar-logo">
+        </header>
+        <ul class="sidebar-nav">
+            <li><a href="index.html" class="active"><i data-feather="clipboard"></i> Órdenes</a></li>
+            <li><a href="html/inventario.html"><i data-feather="package"></i> Inventario</a></li>
+            <li><a href="html/proveedores.html"><i data-feather="truck"></i> Proveedores</a></li>
+            <li><a href="html/cuentas-pagar.html"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
+            <li><a href="html/caja.html"><i data-feather="dollar-sign"></i> Caja</a></li>
+            <li><a href="html/reportes.html"><i data-feather="bar-chart-2"></i> Reportes</a></li>
+            <li><a href="html/configuracion.html"><i data-feather="settings"></i> Configuración</a></li>
+        </ul>
+        <footer class="sidebar-footer">
+            <a href="#" id="logout-btn" role="button" class="contrast outline"><i data-feather="log-out"></i> Cerrar Sesión</a>
+        </footer>
+    </nav>
+
+    <div class="main-content">
+        <header class="top-header">
+            <button class="hamburger" id="hamburger-menu" aria-label="Abrir menú"><i data-feather="menu"></i></button>
+            <img src="img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo">
+            <div class="mobile-header-actions">
+                <button class="add-btn-mobile js-show-form" aria-label="Crear nueva orden"><i data-feather="plus"></i></button>
+                <button id="theme-toggle" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+            </div>
+        </header>
+
+        <main class="container">
+            <article id="form-section">
+                <header class="page-header">
+                    <h2>Registrar Nueva Orden</h2>
+                    <button class="secondary outline js-hide-form"><i data-feather="x"></i> Cancelar</button>
+                </header>
+                <form id="orden-form">
+                    <label for="taller">Taller / Sucursal de Recepción</label>
+                    <select id="taller" name="taller" required>
+                        <option value="Taller Principal" selected>Taller Principal</option>
+                        <option value="Sucursal Centro">Sucursal Centro</option>
+                    </select>
+                    <hr>
+                    <div class="form-section-grid">
+                        <fieldset><legend>Datos del Cliente</legend><label>Nombre Completo<input type="text" name="cliente_nombre" required></label><div class="grid"><label>Teléfono<input type="tel" name="cliente_telefono"></label><label>Email<input type="email" name="cliente_email"></label></div></fieldset>
+                        <fieldset><legend>Datos del Equipo</legend>
+                            <div class="grid"><label>Marca<input type="text" name="equipo_marca"></label><label>Modelo<input type="text" name="equipo_modelo"></label></div>
+                            <div class="grid">
+                                <label>IMEI / Serial<input type="text" name="imei_serial"></label>
+                                <div>
+                                    <label>Patrón / Contraseña</label>
+                                    <input type="text" name="desbloqueo" id="desbloqueo-input">
+                                </div>
+                            </div>
+                            <div class="pattern-lock-container">
+                                <button type="button" class="secondary outline small-btn" id="draw-pattern-btn"><i data-feather="grid"></i> Dibujar Patrón</button>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <label>Falla Reportada por el Cliente</label><textarea name="falla_reportada" required rows="3"></textarea>
+                    <label>Accesorios Incluidos (cargador, SIM, etc.)</label><input type="text" name="accesorios"><hr>
+                    <h6><i data-feather="check-square"></i> Detalles Estéticos</h6>
+                    <fieldset class="detalles-grid"><label><input type="checkbox" name="detalles_esteticos" value="Pantalla Rayada"> Pantalla Rayada</label><label><input type="checkbox" name="detalles_esteticos" value="Pantalla Rota"> Pantalla Rota</label><label><input type="checkbox" name="detalles_esteticos" value="Carcasa Rayada"> Carcasa Rayada</label><label><input type="checkbox" name="detalles_esteticos" value="Golpes en Esquinas"> Golpes en Esquinas</label><label><input type="checkbox" name="detalles_esteticos" value="Signos de Humedad"> Signos de Humedad</label><label><input type="checkbox" id="otro-detalle-check"> Otro...</label></fieldset><div id="otro-detalle-textarea-container" class="hidden"><label>Describa el otro detalle</label><textarea name="otro_detalle"></textarea></div><div class="form-section-grid"><fieldset><legend><i data-feather="camera"></i> Evidencia Fotográfica</legend><div id="fotos-preview-container"></div><input type="file" id="fotos-input" multiple accept="image/*" class="hidden"><button type="button" role="button" class="outline" id="add-foto-button"><i data-feather="plus"></i> Añadir Foto</button></fieldset><fieldset><legend><i data-feather="dollar-sign"></i> Cotización</legend><label>Cotización Inicial (Opcional)<input type="number" name="cotizacion_inicial" step="0.01" placeholder="0.00"></label></fieldset></div>
+                    <hr>
+                    <button type="submit" class="primary">Crear Orden de Servicio</button>
+                </form>
+            </article>
+
+            <article id="list-section">
+                <header class="page-header">
+                    <h2>Órdenes de Servicio</h2>
+                    <button class="primary create-order-btn js-show-form"><i data-feather="plus"></i> Crear Orden</button>
+                </header>
+                <nav class="filter-tabs">
+                    <ul>
+                        <li><a href="#" class="active" data-filter="recientes">Recientes</a></li>
+                        <li><a href="#" data-filter="pendientes">Pendientes</a></li>
+                        <li><a href="#" data-filter="en-ejecucion">En Ejecución</a></li>
+                        <li><a href="#" data-filter="completadas">Completadas</a></li>
+                    </ul>
+                </nav>
+                <div class="overflow-auto">
+                    <table>
+                        <thead><tr><th class="desktop-only">ID</th><th>Equipo</th><th>Falla</th><th class="desktop-only">Cliente</th><th class="desktop-only">Recibido</th><th>Estado</th><th>Acción</th></tr></thead>
+                        <tbody id="ordenes-tbody"></tbody>
+                    </table>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <dialog id="post-creation-modal">
+        <article>
+            <header><a href="#close" aria-label="Close" class="close js-close-post-creation-modal"></a><h3><i data-feather="check-circle"></i> Orden Creada con Éxito</h3></header>
+            <p>La orden <strong>#<span id="new-order-id"></span></strong> ha sido registrada. ¿Qué deseas hacer a continuación?</p>
+            <div class="hidden"><svg id="sticker-barcode"></svg></div>
+            <footer class="modal-actions-grid">
+                <button class="secondary outline js-close-post-creation-modal">Cerrar</button>
+                <button id="download-sticker-btn" class="primary"><i data-feather="tag"></i> Descargar Etiqueta</button>
+                <a href="#" id="view-receipt-btn" role="button" class="primary"><i data-feather="file-text"></i> Ver Recibo</a>
+            </footer>
+        </article>
+    </dialog>
+
+    <div class="hidden">
+        <canvas id="download-barcode-canvas"></canvas>
+    </div>
+
+    <div id="pattern-wrapper" class="hidden">
+        <div id="pattern-grid">
+            <div class="pattern-dot" data-id="1"></div><div class="pattern-dot" data-id="2"></div><div class="pattern-dot" data-id="3"></div>
+            <div class="pattern-dot" data-id="4"></div><div class="pattern-dot" data-id="5"></div><div class="pattern-dot" data-id="6"></div>
+            <div class="pattern-dot" data-id="7"></div><div class="pattern-dot" data-id="8"></div><div class="pattern-dot" data-id="9"></div>
+        </div>
+        <canvas id="pattern-canvas"></canvas>
+        <div class="pattern-actions">
+            <button type="button" class="contrast outline small-btn" id="clear-pattern-btn">Limpiar</button>
+            <button type="button" class="primary small-btn" id="save-pattern-btn">Guardar</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

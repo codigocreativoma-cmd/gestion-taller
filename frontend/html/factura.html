@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura de Venta - ServiTech</title>
+    <link rel="stylesheet" href="../css/factura.css">
+</head>
+<body class="receipt-page">
+
+    <div class="print-controls">
+        <div class="container">
+            <p>Factura generada. ¿Deseas imprimir?</p>
+            <div class="control-buttons">
+                <a href="caja.html" role="button" class="secondary outline">Volver a la Caja</a>
+                <button class="primary" id="print-receipt-btn">Imprimir Factura</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="print-container">
+        <div class="receipt-wrapper thermal-format">
+            <header class="thermal-header">
+                <img src="../img/logo.png" alt="Logo" class="receipt-logo">
+                <strong class="company-name">Cargando...</strong>
+                <span class="company-address">...</span>
+                <span>Tel: <span class="company-phone">...</span></span>
+            </header>
+            <hr class="dashed">
+            <div class="info-grid">
+                <span><strong>Factura N°:</strong> <span id="factura-id">--</span></span>
+                <span><strong>Fecha:</strong> <span id="factura-fecha">--</span></span>
+            </div>
+            <p><strong>Cliente:</strong> <span id="factura-cliente">--</span></p>
+            <hr class="dashed">
+            
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>Cant.</th>
+                        <th>Descripción</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody id="factura-items">
+                    </tbody>
+            </table>
+
+            <hr class="dashed">
+
+            <div class="totals-grid">
+                <div></div> <div>
+                    <p><strong>Subtotal:</strong> <span id="factura-subtotal">--</span></p>
+                    <p><strong>TOTAL:</strong> <strong id="factura-total">--</strong></p>
+                </div>
+            </div>
+
+            <footer class="thermal-footer">
+                <p>Método de Pago: <span id="factura-metodo-pago">--</span></p>
+                <p>¡Gracias por su compra!</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="../js/factura.js"></script>
+</body>
+</html>

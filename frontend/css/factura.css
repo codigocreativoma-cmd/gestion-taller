@@ -1,0 +1,148 @@
+/* Estilos dedicados para la página de Factura de Venta */
+
+/* --- Reset y Configuración Base --- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #f0f2f5; /* Un fondo neutro */
+    color: #111;
+}
+
+/* --- Controles Superiores (No se imprimen) --- */
+.print-controls {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.print-controls .container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Pico.css-style buttons (versión ligera) */
+button, a[role="button"] {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+.primary { background-color: #1095c1; color: white; border-color: #1095c1; }
+.secondary.outline { background-color: transparent; color: #546e7a; border-color: #546e7a; }
+
+
+/* --- Contenedor del Ticket --- */
+.print-container {
+    padding: 2rem 0;
+}
+
+.receipt-wrapper.thermal-format {
+    width: 80mm;
+    margin: 0 auto;
+    padding: 5mm;
+    background-color: white;
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.thermal-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.receipt-logo {
+    max-width: 60%;
+    margin-bottom: 0.5rem;
+}
+
+hr.dashed {
+    border: none;
+    border-top: 1px dashed #333;
+    margin: 0.5rem 0;
+}
+
+.info-grid {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Tabla de Items */
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+}
+
+.items-table th, .items-table td {
+    padding: 0.25rem 0;
+    vertical-align: top;
+}
+
+.items-table th:nth-child(1), .items-table td:nth-child(1) { text-align: left; width: 15%; } /* Cant. */
+.items-table th:nth-child(2), .items-table td:nth-child(2) { text-align: left; } /* Descripción */
+.items-table th:nth-child(3), .items-table td:nth-child(3) { text-align: right; width: 30%; } /* Subtotal */
+
+/* Totales */
+.totals-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    font-size: 1.1em;
+}
+.totals-grid p {
+    margin: 0.1rem 0;
+    text-align: right;
+}
+
+/* Pie de página del ticket */
+.thermal-footer {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9em;
+}
+.thermal-footer p {
+    margin: 0.2rem 0;
+}
+
+
+/* --- REGLAS DE IMPRESIÓN --- */
+@media print {
+    body {
+        background-color: white !important;
+    }
+    .print-controls {
+        display: none !important;
+    }
+    .print-container {
+        padding: 0;
+    }
+    .receipt-wrapper {
+        margin: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+        height: 100% !important;
+        padding: 0;
+    }
+}

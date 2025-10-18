@@ -1,0 +1,86 @@
+:root {
+    --pico-font-size: 14px;
+}
+
+html { 
+    font-size: var(--pico-font-size);
+}
+
+body.receipt-page { 
+    display: block; 
+    background-color: var(--pico-muted-background-color);
+}
+
+.print-controls { 
+    background-color: var(--pico-card-background-color); 
+    border-bottom: 1px solid var(--pico-border); 
+    padding: 0.5rem 1rem; 
+    position: sticky; 
+    top: 0; 
+    z-index: 1100; 
+}
+.print-controls .container { display: flex; justify-content: space-between; align-items: center; }
+.print-controls fieldset { display: flex; gap: 1.5rem; margin-bottom: 0; padding: 0; border: none; }
+.print-controls .control-buttons { display: flex; gap: 1rem; }
+.print-container { padding: 2rem 0; }
+
+.receipt-wrapper { 
+    margin: 0 auto; 
+    background-color: white; 
+    box-shadow: 0 0 15px rgba(0,0,0,0.1); 
+    color: black; 
+    box-sizing: border-box; 
+}
+.a4-format { 
+    width: 210mm; 
+    min-height: 297mm; 
+    padding: 20mm; 
+    display: flex;
+    flex-direction: column; 
+}
+.thermal-format { 
+    width: 80mm; 
+    padding: 5mm; 
+    font-size: 12px; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+/* CORRECCIÓN CLAVE: Asegura que todos los hijos del formato térmico respeten el modelo de caja */
+.thermal-format * {
+    box-sizing: border-box;
+}
+.thermal-header { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+.thermal-header .receipt-logo { max-width: 60%; margin-bottom: 0.5rem; }
+hr.dashed { border: none; border-top: 1px dashed #333; margin: 0.5rem 0; }
+.thermal-format p { margin-bottom: 0.5rem; }
+.thermal-format .policies-section ul { list-style: none; padding: 0; margin: 0; font-size: 0.9em; }
+.thermal-format .policies-section li { margin-bottom: 0.25rem; }
+.thermal-format .policies-section li::before { content: "- "; }
+body.format-a4 .a4-format { display: flex; }
+body.format-a4 .thermal-format { display: none; }
+body.format-thermal .thermal-format { display: block; }
+body.format-thermal .a4-format { display: none; }
+.receipt-wrapper * { font-family: 'Courier New', Courier, monospace; }
+.receipt-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed #ccc; padding-bottom: 1rem; margin-bottom: 1rem; }
+.receipt-logo { max-width: 150px; max-height: 70px; object-fit: contain; }
+.company-details { text-align: right; font-size: 0.9em; }
+.receipt-title { text-align: center; margin-block: 1.5rem; }
+.receipt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1.5rem; }
+.receipt-table { margin-bottom: 1.5rem; width: 100%; }
+.receipt-table th { text-align: right; padding-right: 1rem; width: 30%; vertical-align: top; }
+.receipt-table td { font-weight: bold; }
+.policies-section ul { list-style-type: disc; padding-left: 1.5rem; font-size: 0.8em; }
+.receipt-footer { text-align: center; margin-top: 2rem; border-top: 2px dashed #ccc; padding-top: 1rem; }
+.barcode-bottom { text-align: center; margin-top: auto; padding-top: 2rem; }
+.barcode-bottom .barcode { max-width: 100%; height: auto; }
+
+@media print {
+    body > *:not(.print-container) { display: none !important; }
+    body.receipt-page { background-color: white !important; }
+    .print-container { padding: 0; }
+    .receipt-wrapper { margin: 0 !important; box-shadow: none !important; border: none !important; width: 100% !important; height: 100% !important; }
+    body.format-a4 .thermal-format { display: none !important; }
+    body.format-a4 .a4-format { display: flex !important; padding: 0; }
+    body.format-thermal .a4-format { display: none !important; }
+    body.format-thermal .thermal-format { display: block !important; padding: 0; }
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - ServiTech</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" href="../css/custom.css">
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <header class="sidebar-header">
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo">
+        </header>
+        <ul class="sidebar-nav">
+            <li><a href="../index.html"><i data-feather="clipboard"></i> Órdenes</a></li>
+            <li><a href="inventario.html"><i data-feather="package"></i> Inventario</a></li>
+            <li><a href="proveedores.html"><i data-feather="truck"></i> Proveedores</a></li>
+            <li><a href="cuentas-pagar.html"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
+            <li><a href="caja.html"><i data-feather="dollar-sign"></i> Caja</a></li>
+            <li><a href="reportes.html"><i data-feather="bar-chart-2"></i> Reportes</a></li>
+            <li><a href="configuracion.html" class="active"><i data-feather="settings"></i> Configuración</a></li>
+        </ul>
+        <footer class="sidebar-footer">
+            <a href="#" id="logout-btn" role="button" class="contrast outline"><i data-feather="log-out"></i> Cerrar Sesión</a>
+        </footer>
+    </nav>
+
+    <div class="main-content">
+        <header class="top-header">
+            <button class="hamburger" id="hamburger-menu" aria-label="Abrir menú"><i data-feather="menu"></i></button>
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo">
+            <div class="mobile-header-actions">
+                <button id="theme-toggle" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+            </div>
+        </header>
+
+        <main class="container">
+            <article>
+                <header class="page-header">
+                    <h2>Configuración del Sistema</h2>
+                </header>
+                
+                <form id="config-form">
+                    <fieldset>
+                        <legend>Logo de la Empresa</legend>
+                        <div class="logo-upload-container">
+                            <img id="logo-preview" src="../img/logo.png" alt="Vista previa del logo" class="logo-preview">
+                            <div>
+                                <label for="logo-input">Seleccionar nuevo logo (.png)</label>
+                                <input type="file" id="logo-input" name="logo_file" accept="image/png">
+                                <small>La imagen se guardará como 'logo.png'. Se recomienda un formato horizontal y transparente.</small>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>Datos de la Empresa</legend>
+                        <label>Nombre de la Empresa
+                            <input type="text" name="nombre_empresa" required>
+                        </label>
+                        <label>Dirección
+                            <input type="text" name="direccion_empresa">
+                        </label>
+                        <label>Teléfono
+                            <input type="tel" name="telefono_empresa">
+                        </label>
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>Términos y Condiciones (para Recibos de Orden)</legend>
+                        <label>
+                            Escribe cada política en una nueva línea.
+                            <textarea name="politicas" rows="8" placeholder="Política 1...\nPolítica 2...\nPolítica 3..."></textarea>
+                        </label>
+                    </fieldset>
+                    
+                    <hr>
+                    <button type="submit" id="save-config-btn">Guardar Cambios</button>
+                </form>
+            </article>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="../js/configuracion.js"></script>
+</body>
+</html>

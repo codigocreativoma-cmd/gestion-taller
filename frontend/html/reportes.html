@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - ServiTech</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" href="../css/custom.css">
+    <link rel="stylesheet" href="../css/reportes.css">
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <header class="sidebar-header">
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo">
+        </header>
+        <ul class="sidebar-nav">
+            <li><a href="../index.html"><i data-feather="clipboard"></i> Órdenes</a></li>
+            <li><a href="inventario.html"><i data-feather="package"></i> Inventario</a></li>
+            <li><a href="proveedores.html"><i data-feather="truck"></i> Proveedores</a></li>
+            <li><a href="cuentas-pagar.html"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
+            <li><a href="caja.html"><i data-feather="dollar-sign"></i> Caja</a></li>
+            <li><a href="reportes.html" class="active"><i data-feather="bar-chart-2"></i> Reportes</a></li>
+            <li><a href="configuracion.html"><i data-feather="settings"></i> Configuración</a></li>
+        </ul>
+        <footer class="sidebar-footer">
+            <a href="#" id="logout-btn" role="button" class="contrast outline"><i data-feather="log-out"></i> Cerrar Sesión</a>
+        </footer>
+    </nav>
+
+    <div class="main-content">
+        <header class="top-header">
+            <button class="hamburger" id="hamburger-menu" aria-label="Abrir menú"><i data-feather="menu"></i></button>
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo">
+            <div class="mobile-header-actions">
+                <button id="theme-toggle" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+            </div>
+        </header>
+
+        <main class="container">
+            <div class="page-header">
+                <h2>Reporte de Ventas</h2>
+            </div>
+
+            <article>
+                <form id="report-form">
+                    <div class="grid">
+                        <label for="fecha-inicio">Fecha de Inicio
+                            <input type="date" id="fecha-inicio" name="inicio">
+                        </label>
+                        <label for="fecha-fin">Fecha de Fin
+                            <input type="date" id="fecha-fin" name="fin">
+                        </label>
+                        <button type="submit" class="contrast">Generar Reporte</button>
+                    </div>
+                </form>
+            </article>
+
+            <section id="summary-section" aria-busy="true">
+                <div class="grid">
+                    <article class="summary-card">
+                        <header>Total Ingresos</header>
+                        <h2 id="total-ingresos">$0.00</h2>
+                    </article>
+                    <article class="summary-card">
+                        <header>Costo de Ventas (CPV)</header>
+                        <h2 id="total-costos">$0.00</h2>
+                    </article>
+                    <article class="summary-card profit">
+                        <header>Ganancia Bruta</header>
+                        <h2 id="ganancia-bruta">$0.00</h2>
+                    </article>
+                </div>
+            </section>
+            
+            <article id="details-section">
+                <header><h6>Detalle de Transacciones</h6></header>
+                <div class="overflow-auto">
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>ID Venta</th>
+                                <th>Fecha</th>
+                                <th>Cliente / Descripción</th>
+                                <th>Total</th>
+                                <th>Método de Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody id="report-details-tbody">
+                            </tbody>
+                    </table>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="../js/reportes.js"></script>
+</body>
+</html>

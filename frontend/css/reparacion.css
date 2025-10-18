@@ -1,0 +1,188 @@
+/* Estilos específicos para la página de gestión de reparación */
+
+body.reparacion-page {
+    background-color: var(--pico-muted-background-color);
+}
+
+.reparacion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
+    gap: 2rem;
+    align-items: start;
+}
+
+/* --- Columna Izquierda: Información --- */
+#info-section h5 {
+    margin-bottom: 0.5rem;
+    color: var(--pico-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+#info-section h5 svg {
+    width: 20px;
+    height: 20px;
+}
+#info-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
+#info-section li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--pico-muted-border-color);
+}
+#info-section li strong {
+    margin-right: 1rem;
+    color: var(--pico-secondary-foreground);
+    white-space: nowrap;
+}
+#info-section li span {
+    text-align: right;
+}
+
+/* Botón para ver evidencia o patrón */
+.view-evidence-btn, .view-pattern-btn {
+    margin-top: 1.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+/* --- Columna Derecha: Acciones --- */
+#reparacion-form fieldset {
+    margin-bottom: 1.5rem;
+}
+#guardar-cambios-btn, #send-to-cashier-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+#send-to-cashier-btn {
+    margin-top: 0.5rem;
+}
+
+/* --- Estilos para la tabla de repuestos --- */
+.cost-summary {
+    text-align: right;
+    font-size: 1.1em;
+    margin-top: 1rem;
+}
+.delete-part-btn {
+    padding: 0.2rem;
+    line-height: 0;
+    --pico-color: var(--pico-color-red-500);
+    --pico-border-color: var(--pico-color-red-500);
+}
+
+/* --- Estilos para las Modales --- */
+#inventory-modal, #manual-part-modal, #evidence-modal, #pattern-view-modal {
+    max-width: 600px;
+}
+#inventory-search-results {
+    margin-top: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--pico-border);
+    border-radius: var(--pico-border-radius);
+}
+.inventory-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+}
+.inventory-item:not(:last-child) {
+    border-bottom: 1px solid var(--pico-border);
+}
+.inventory-item .info strong {
+    display: block;
+}
+.inventory-item .info small {
+    color: var(--pico-secondary-foreground);
+}
+
+/* Estilos para la galería de fotos dentro de la modal */
+.evidence-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.evidence-gallery a {
+    display: block;
+    border: 2px solid var(--pico-border);
+    border-radius: var(--pico-border-radius);
+    overflow: hidden;
+    background-color: var(--pico-muted-background-color);
+}
+.evidence-gallery img {
+    display: block;
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    transition: transform 0.2s ease-in-out;
+}
+.evidence-gallery a:hover img {
+    transform: scale(1.1);
+}
+
+/* --- NUEVO: Estilos para la modal del visualizador de patrón --- */
+#pattern-view-modal {
+    max-width: 300px; /* Hacemos la modal más pequeña */
+}
+.pattern-view-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 1rem auto; /* Centramos la rejilla */
+}
+.pattern-grid-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    height: 100%;
+}
+.pattern-dot-view {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pattern-dot-view::after {
+    content: '';
+    display: block;
+    width: 15px;
+    height: 15px;
+    background-color: var(--pico-muted-border-color);
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+.pattern-dot-view.active::after {
+    background-color: var(--pico-primary);
+}
+.pattern-dot-view.start-node::after {
+    background-color: var(--pico-color-green-550); /* Punto de inicio verde */
+}
+#pattern-view-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* --- VISTA MÓVIL --- */
+@media (max-width: 992px) {
+    .reparacion-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - ServiTech</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="login-page-body">
+
+    <div class="login-container">
+        <div class="login-image-section">
+            </div>
+
+        <div class="login-form-section">
+            <article class="login-card">
+                <header>
+                    <img src="img/logo.png" alt="Logo ServiTech" class="login-logo">
+                    <h3>Acceso al Sistema</h3>
+                </header>
+                
+                <form id="login-form">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" name="usuario" placeholder="Ej: admin" required>
+                    
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                    
+                    <small id="error-message" class="error-text"></small>
+                    
+                    <button type="submit" id="login-button">Ingresar</button>
+                </form>
+            </article>
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - ServiTech</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" href="../css/custom.css">
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <header class="sidebar-header">
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo">
+        </header>
+        <ul class="sidebar-nav">
+            <li><a href="../index.html"><i data-feather="clipboard"></i> Órdenes</a></li>
+            <li><a href="inventario.html" class="active"><i data-feather="package"></i> Inventario</a></li>
+            <li><a href="proveedores.html"><i data-feather="truck"></i> Proveedores</a></li>
+            <li><a href="cuentas-pagar.html"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
+            <li><a href="caja.html"><i data-feather="dollar-sign"></i> Caja</a></li>
+            <li><a href="reportes.html"><i data-feather="bar-chart-2"></i> Reportes</a></li>
+            <li><a href="configuracion.html"><i data-feather="settings"></i> Configuración</a></li>
+        </ul>
+        <footer class="sidebar-footer">
+            <a href="#" id="logout-btn" role="button" class="contrast outline"><i data-feather="log-out"></i> Cerrar Sesión</a>
+        </footer>
+    </nav>
+
+    <div class="main-content">
+        <header class="top-header">
+            <button class="hamburger" id="hamburger-menu" aria-label="Abrir menú"><i data-feather="menu"></i></button>
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo">
+            <div class="mobile-header-actions">
+                <button class="add-btn-mobile js-show-form" aria-label="Añadir Producto"><i data-feather="plus"></i></button>
+                <button id="theme-toggle" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+            </div>
+        </header>
+
+        <main class="container">
+            <article id="form-section">
+                <header class="page-header">
+                    <h2>Añadir Nuevo Producto al Catálogo</h2>
+                    <button class="secondary outline js-hide-form"><i data-feather="x"></i> Cancelar</button>
+                </header>
+                <form id="product-form">
+                    <label>Nombre del Producto<input type="text" name="nombre" required></label>
+                    <label>Descripción</label>
+                    <textarea name="descripcion" rows="2"></textarea>
+                    <div class="grid">
+                        <label>Precio de Costo<input type="number" name="precio_costo" step="0.01" placeholder="0.00"></label>
+                        <label>Precio de Venta<input type="number" name="precio_venta" step="0.01" placeholder="0.00" required></label>
+                    </div>
+                    <label>Proveedor
+                        <select id="proveedor-select" name="proveedor_id">
+                            <option value="">Ninguno</option>
+                        </select>
+                    </label>
+                    <hr>
+                    <div id="stock-inicial-section">
+                        <p><strong>Stock Inicial</strong> (Primera entrada de este producto)</p>
+                        <div class="grid">
+                            <label>Taller / Sucursal
+                                <select name="taller" required>
+                                    <option value="Taller Principal" selected>Taller Principal</option>
+                                    <option value="Sucursal Centro">Sucursal Centro</option>
+                                </select>
+                            </label>
+                            <label>Cantidad Inicial<input type="number" name="cantidad" value="1" required></label>
+                            <label>Stock Mínimo<input type="number" name="stock_minimo" value="5"></label>
+                        </div>
+                    </div>
+                    <hr>
+                    <button type="submit">Guardar Producto</button>
+                </form>
+            </article>
+
+            <article id="list-section">
+                <header class="page-header">
+                    <h2>Gestión de Inventario</h2>
+                    <button class="primary create-btn js-show-form"><i data-feather="plus"></i> Añadir Producto</button>
+                </header>
+                <form id="search-form" class="search-form">
+                    <input type="search" id="search-input" name="search" placeholder="Buscar producto por nombre...">
+                    <button type="submit" class="secondary outline">Buscar</button>
+                </form>
+                <div class="overflow-auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Cantidad Total</th>
+                                <th>Precio Venta</th>
+                                <th class="desktop-only">Proveedor</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-tbody"></tbody>
+                    </table>
+                </div>
+                <footer class="pagination-footer">
+                    <small id="pagination-info">Mostrando 0 de 0 productos</small>
+                    <div class="pagination-buttons">
+                        <button id="prev-page-btn" class="outline" disabled>&laquo; Anterior</button>
+                        <button id="next-page-btn" class="outline" disabled>Siguiente &raquo;</button>
+                    </div>
+                </footer>
+            </article>
+        </main>
+    </div>
+
+    <dialog id="stock-locations-modal">
+        <article>
+            <header>
+                <a href="#close" aria-label="Close" class="close js-close-modal"></a>
+                Ubicaciones de: <strong id="stock-product-name"></strong>
+            </header>
+            <div id="stock-locations-content"></div>
+        </article>
+    </dialog>
+
+    <dialog id="add-stock-modal">
+        <article>
+            <header>
+                <a href="#close" aria-label="Close" class="close js-close-modal"></a>
+                Añadir Stock a: <strong id="add-stock-product-name"></strong>
+            </header>
+            <form id="add-stock-form">
+                <div class="grid">
+                    <label>Cantidad a Añadir
+                        <input type="number" name="cantidad" min="1" value="1" required>
+                    </label>
+                    <label>Taller de Destino
+                        <select name="taller" required>
+                            <option value="Taller Principal" selected>Taller Principal</option>
+                            <option value="Sucursal Centro">Sucursal Centro</option>
+                        </select>
+                    </label>
+                </div>
+                <footer>
+                    <button type="button" class="secondary outline js-close-modal">Cancelar</button>
+                    <button type="submit">Añadir Stock</button>
+                </footer>
+            </form>
+        </article>
+    </dialog>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="../js/inventario.js"></script>
+</body>
+</html>

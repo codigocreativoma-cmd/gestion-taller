@@ -1,0 +1,35 @@
+{
+  "name": "gestion-taller-backend",
+  "version": "1.0.0",
+  "description": "Backend para el sistema de gestión de talleres",
+  "main": "server.js",
+  "bin": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "build": "pkg ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "pkg": {
+    "assets": [
+      "../frontend/**/*",
+      "../uploads/**/*",
+      "node_modules/sqlite3/build/Release/node_sqlite3.node"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ],
+    "outputPath": "dist"
+  }
+}

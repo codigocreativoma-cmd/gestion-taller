@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo de Orden - ServiTech</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" href="../css/recibo.css">
+</head>
+<body class="receipt-page">
+
+    <div class="print-controls">
+        <div class="container">
+            <fieldset>
+                <legend>Formato de Impresión</legend>
+                <label for="format-a4"><input type="radio" id="format-a4" name="print-format" value="a4" checked> Nota de Entrega (A4)</label>
+                <label for="format-thermal"><input type="radio" id="format-thermal" name="print-format" value="thermal"> Impresora Térmica (80mm)</label>
+            </fieldset>
+            <div class="control-buttons">
+                <a href="../index.html" role="button" class="secondary outline">Volver al Inicio</a>
+                <button class="primary" id="print-receipt-btn"><i data-feather="printer"></i> Imprimir</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="print-container">
+        <div class="receipt-wrapper a4-format">
+            <header class="receipt-header">
+                <img src="../img/logo.png" alt="Logo" class="receipt-logo">
+                <div class="company-details">
+                    <strong class="company-name">Cargando...</strong><br>
+                    <span class="company-address">...</span><br>
+                    Tel: <span class="company-phone">...</span>
+                </div>
+            </header>
+            <h3 class="receipt-title">ORDEN DE SERVICIO TÉCNICO N° <span class="receipt-id">--</span></h3>
+            <div class="receipt-grid">
+                <div><strong>Fecha Ingreso:</strong> <span class="receipt-fecha">--</span></div>
+                <div><strong>Cliente:</strong> <span class="receipt-cliente">--</span></div>
+                <div><strong>Teléfono:</strong> <span class="receipt-telefono">--</span></div>
+            </div>
+            <table class="receipt-table">
+                <caption>Detalles del Equipo y Falla</caption>
+                <tbody>
+                    <tr><th>Equipo:</th><td class="receipt-equipo">--</td></tr>
+                    <tr><th>IMEI/Serial:</th><td class="receipt-imei">--</td></tr>
+                    <tr><th>Desbloqueo:</th><td class="receipt-desbloqueo">--</td></tr>
+                    <tr><th>Falla Reportada:</th><td class="receipt-falla">--</td></tr>
+                    <tr><th>Detalles Estéticos:</th><td class="receipt-detalles">--</td></tr>
+                    <tr><th>Accesorios:</th><td class="receipt-accesorios">--</td></tr>
+                    <tr><th>Cotización Inicial:</th><td class="receipt-cotizacion">--</td></tr>
+                </tbody>
+            </table>
+            <div class="policies-section"><h6>Políticas y Condiciones del Servicio</h6><ul class="receipt-politicas"></ul></div>
+            <footer class="receipt-footer"><p>Firma del Cliente: _________________________</p><small>He leído y acepto las condiciones del servicio.</small></footer>
+            <div class="barcode-bottom"><canvas class="barcode"></canvas></div>
+        </div>
+
+        <div class="receipt-wrapper thermal-format">
+            <header class="thermal-header">
+                <img src="../img/logo.png" alt="Logo" class="receipt-logo">
+                <strong class="company-name">Cargando...</strong>
+                <span class="company-address">...</span>
+                <span>Tel: <span class="company-phone">...</span></span>
+            </header>
+            <hr class="dashed">
+            <p><strong>Orden N°:</strong> <span class="receipt-id">--</span></p>
+            <p><strong>Fecha:</strong> <span class="receipt-fecha">--</span></p>
+            <p><strong>Cliente:</strong> <span class="receipt-cliente">--</span></p>
+            <p><strong>Equipo:</strong> <span class="receipt-equipo">--</span></p>
+            <hr class="dashed"><p><strong>Falla Reportada:</strong></p><p class="receipt-falla">--</p><hr class="dashed">
+            <div class="policies-section"><ul class="receipt-politicas"></ul></div>
+            <div class="barcode-bottom"><canvas class="barcode"></canvas></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="../js/recibo.js"></script>
+</body>
+</html>
