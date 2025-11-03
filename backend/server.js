@@ -215,6 +215,38 @@ const startServer = async () => {
             });
         });
 
+        app.delete('/api/ordenes/:id', authenticateToken, (req, res) => {
+            const id = req.params.id;
+            db.get('SELECT id FROM ordenes WHERE id = ?', [id], (err, row) => {
+                if (err) return res.status(500).json({ error: err.message });
+                if (!row) return res.status(404).json({ error: 'Orden no encontrada.' });
+
+                db.all('SELECT ruta_archivo FROM fotos_evidencia WHERE orden_id = ?', [id], (photosErr, photos) => {
+                    if (photosErr) return res.status(500).json({ error: photosErr.message });
+
+                    db.run('DELETE FROM ordenes WHERE id = ?', [id], function(deleteErr) {
+                        if (deleteErr) {
+                            return res.status(500).json({ error: deleteErr.message });
+                        }
+
+                        if (photos && photos.length > 0) {
+                            photos.forEach(photo => {
+                                if (!photo.ruta_archivo) return;
+                                const filePath = path.join(__dirname, '..', 'uploads', photo.ruta_archivo);
+                                fs.unlink(filePath, (unlinkErr) => {
+                                    if (unlinkErr && unlinkErr.code !== 'ENOENT') {
+                                        console.warn(`No se pudo eliminar la evidencia ${filePath}:`, unlinkErr.message);
+                                    }
+                                });
+                            });
+                        }
+
+                        res.json({ message: 'Orden eliminada con éxito.' });
+                    });
+                });
+            });
+        });
+
         app.get('/api/inventario', authenticateToken, (req, res) => {
             const pagina = parseInt(req.query.pagina, 10) || 1;
             const buscar = req.query.buscar || '';
