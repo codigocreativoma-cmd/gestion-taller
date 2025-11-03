@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hamburgerMenu = document.getElementById('hamburger-menu');
     const overlay = document.getElementById('overlay');
     const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDesktop = document.getElementById('theme-toggle-desktop');
     const htmlElement = document.documentElement;
     const ordenForm = document.getElementById('orden-form');
     const otroDetalleCheck = document.getElementById('otro-detalle-check');
@@ -60,26 +61,47 @@ document.addEventListener('DOMContentLoaded', () => {
     hideFormButtons.forEach(btn => btn.addEventListener('click', hideForm));
 
     // --- LÓGICA DEL PANEL (UI) ---
-    const toggleMenu = () => { sidebar.classList.toggle('is-open'); overlay.classList.toggle('is-visible'); };
+    const toggleMenu = () => {
+        sidebar.classList.toggle('is-open');
+        if (!overlay) return;
+        const isOpen = sidebar.classList.contains('is-open');
+        overlay.classList.toggle('is-visible', isOpen);
+        overlay.classList.toggle('hidden', !isOpen);
+    };
     if (hamburgerMenu) hamburgerMenu.addEventListener('click', toggleMenu);
     if (overlay) overlay.addEventListener('click', toggleMenu);
-    const applyTheme = (theme) => {
-        htmlElement.setAttribute('data-theme', theme);
-        if (themeToggle) {
+    const updateThemeIcons = (theme) => {
+        const toggles = [themeToggle, themeToggleDesktop].filter(Boolean);
+        toggles.forEach(button => {
             const newIcon = document.createElement('i');
             newIcon.setAttribute('data-feather', theme === 'dark' ? 'sun' : 'moon');
-            themeToggle.innerHTML = '';
-            themeToggle.appendChild(newIcon);
+            button.innerHTML = '';
+            button.appendChild(newIcon);
+        });
+    };
+
+    const applyTheme = (theme) => {
+        if (theme === 'dark') {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
         }
+        updateThemeIcons(theme);
         feather.replace();
     };
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            const newTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', newTheme);
-            applyTheme(newTheme);
-        });
-    }
+
+    const handleThemeToggle = () => {
+        const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', newTheme);
+        applyTheme(newTheme);
+    };
+
+    [themeToggle, themeToggleDesktop].forEach(toggle => {
+        if (toggle) {
+            toggle.addEventListener('click', handleThemeToggle);
+        }
+    });
     if (logoutBtn) {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -151,9 +173,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (downloadStickerBtn) { downloadStickerBtn.addEventListener('click', () => { if (currentNewOrderId) { downloadBarcodeAsPng(currentNewOrderId); } }); }
 
     // --- LÓGICA DE VISUALIZACIÓN DE ÓRDENES ---
+    let currentFilter = 'recientes';
     const fetchOrdenes = async (filtro = 'recientes') => {
+        currentFilter = filtro;
         if (!ordenesTbody) return;
-        ordenesTbody.innerHTML = '<tr><td colspan="7" aria-busy="true">Cargando órdenes...</td></tr>';
+        ordenesTbody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-center text-sm text-slate-500">Cargando órdenes...</td></tr>';
         try {
             const response = await fetch(`/api/ordenes?filtro=${filtro}`, { headers: { 'Authorization': `Bearer ${token}` } });
             if (response.status === 401 || response.status === 403) { localStorage.removeItem('authToken'); window.location.href = 'login.html'; return; }
@@ -165,24 +189,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     const equipo = `${orden.equipo_marca || ''} ${orden.equipo_modelo || ''}`.trim();
                     const fecha = new Date(orden.fecha_creacion.replace(' ', 'T') + 'Z').toLocaleDateString('es-CO');
                     tr.innerHTML = `
-                        <td class="desktop-only">${orden.id}</td>
-                        <td><strong>${equipo || 'N/A'}</strong></td>
-                        <td>${orden.falla_reportada}</td>
-                        <td class="desktop-only">${orden.cliente_nombre}</td>
-                        <td class="desktop-only">${fecha}</td>
-                        <td><mark>${orden.estado}</mark></td>
-                        <td><div class="action-buttons">
-                            <a href="html/recibo.html?id=${orden.id}" target="_blank" role="button" class="outline" title="Ver Recibo"><i data-feather="printer"></i></a>
-                            <button class="outline js-download-sticker" data-id="${orden.id}" title="Descargar Etiqueta"><i data-feather="tag"></i></button>
-                            <a href="html/reparacion.html?id=${orden.id}" role="button" class="outline" title="Iniciar Reparación"><i data-feather="tool"></i></a>
-                        </div></td>`;
+                        <td class="desktop-only px-4 py-3 text-slate-500">${orden.id}</td>
+                        <td class="px-4 py-3">
+                            <p class="font-semibold text-slate-800 dark:text-slate-100">${equipo || 'N/A'}</p>
+                            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">${orden.taller || 'Taller Principal'}</p>
+                        </td>
+                        <td class="px-4 py-3 text-slate-600 dark:text-slate-300">${orden.falla_reportada}</td>
+                        <td class="desktop-only px-4 py-3 text-slate-600 dark:text-slate-300">${orden.cliente_nombre}</td>
+                        <td class="desktop-only px-4 py-3 text-slate-500 dark:text-slate-400">${fecha}</td>
+                        <td class="px-4 py-3"><span class="mark-status">${orden.estado}</span></td>
+                        <td class="px-4 py-3">
+                            <div class="action-buttons">
+                                <a href="html/recibo.html?id=${orden.id}" target="_blank" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" title="Ver Recibo"><i data-feather="printer"></i></a>
+                                <button class="js-download-sticker inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" data-id="${orden.id}" title="Descargar Etiqueta"><i data-feather="tag"></i></button>
+                                <a href="html/reparacion.html?id=${orden.id}" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" title="Iniciar Reparación"><i data-feather="tool"></i></a>
+                                <button class="js-delete-order inline-flex items-center justify-center gap-2 rounded-lg border border-red-500 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50 dark:border-red-400 dark:text-red-300 dark:hover:bg-red-500/10" data-id="${orden.id}" title="Eliminar Orden"><i data-feather="trash-2"></i></button>
+                            </div>
+                        </td>`;
                     ordenesTbody.appendChild(tr);
                 });
             } else {
                 const tr = document.createElement('tr');
                 const td = document.createElement('td');
                 td.colSpan = 7;
-                td.style.textAlign = 'center';
+                td.className = 'px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400';
                 td.textContent = 'No se encontraron órdenes para este filtro.';
                 tr.appendChild(td);
                 ordenesTbody.appendChild(tr);
@@ -192,12 +222,39 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // --- MANEJO DE EVENTOS ---
+    const deleteOrder = async (orderId) => {
+        if (!orderId) return;
+        const confirmed = window.confirm('¿Deseas eliminar esta orden de servicio? Esta acción no se puede deshacer.');
+        if (!confirmed) return;
+        try {
+            const response = await fetch(`/api/ordenes/${orderId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                alert(result.error || 'No se pudo eliminar la orden.');
+                return;
+            }
+            fetchOrdenes(currentFilter);
+        } catch (error) {
+            console.error('Error eliminando la orden:', error);
+            alert('Ocurrió un error al eliminar la orden.');
+        }
+    };
+
     ordenesTbody.addEventListener('click', (e) => {
         const downloadButton = e.target.closest('.js-download-sticker');
         if (downloadButton) {
             e.preventDefault();
             const orderId = downloadButton.dataset.id;
             downloadBarcodeAsPng(orderId);
+            return;
+        }
+        const deleteButton = e.target.closest('.js-delete-order');
+        if (deleteButton) {
+            e.preventDefault();
+            deleteOrder(deleteButton.dataset.id);
         }
     });
     const filterTabs = document.querySelectorAll('.filter-tabs a');
@@ -237,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (patternSequence.length === 0) return;
         ctx.beginPath();
         ctx.lineWidth = 4;
-        ctx.strokeStyle = 'var(--pico-primary)';
+        ctx.strokeStyle = 'rgb(79, 70, 229)';
         const firstDot = dotCoords.find(c => c.id == patternSequence[0]);
         ctx.moveTo(firstDot.x, firstDot.y);
         patternSequence.forEach(dotId => {
@@ -314,5 +371,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INICIALIZACIÓN ---
     applyTheme(localStorage.getItem('theme') || 'light');
+    if (overlay) {
+        overlay.classList.add('hidden');
+    }
     fetchOrdenes();
 });
