@@ -1,124 +1,168 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuentas por Pagar - ServiTech</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        primary: {
+                            500: '#4f46e5',
+                            600: '#4338ca',
+                            700: '#3730a3'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
     <link rel="stylesheet" href="../css/custom.css">
 </head>
-<body>
-    <div class="overlay" id="overlay"></div>
+<body class="h-full bg-slate-100 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-100">
+    <div id="overlay" class="fixed inset-0 z-30 hidden bg-slate-900/60"></div>
 
-    <nav class="sidebar" id="sidebar">
-        <header class="sidebar-header">
-            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo">
+    <nav id="sidebar" class="sidebar fixed inset-y-0 left-0 z-40 flex w-72 transform flex-col border-r border-slate-200 bg-white shadow-xl transition-transform duration-300 dark:border-slate-700 dark:bg-slate-800 lg:translate-x-0">
+        <header class="flex h-20 items-center justify-center border-b border-slate-200 px-6 dark:border-slate-700">
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo h-12 w-auto">
         </header>
-        <ul class="sidebar-nav">
-            <li><a href="../index.html"><i data-feather="clipboard"></i> Órdenes</a></li>
-            <li><a href="inventario.html"><i data-feather="package"></i> Inventario</a></li>
-            <li><a href="proveedores.html"><i data-feather="truck"></i> Proveedores</a></li>
-            <li><a href="cuentas-pagar.html" class="active"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
-            <li><a href="caja.html"><i data-feather="dollar-sign"></i> Caja</a></li>
-            <li><a href="reportes.html"><i data-feather="bar-chart-2"></i> Reportes</a></li>
-            <li><a href="configuracion.html"><i data-feather="settings"></i> Configuración</a></li>
+        <ul class="flex flex-1 flex-col gap-1 px-4 py-6 text-sm font-medium">
+            <li><a href="../index.html" class="nav-link"><i data-feather="clipboard"></i> Órdenes</a></li>
+            <li><a href="inventario.html" class="nav-link"><i data-feather="package"></i> Inventario</a></li>
+            <li><a href="proveedores.html" class="nav-link"><i data-feather="truck"></i> Proveedores</a></li>
+            <li><a href="cuentas-pagar.html" class="nav-link active"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
+            <li><a href="caja.html" class="nav-link"><i data-feather="dollar-sign"></i> Caja</a></li>
+            <li><a href="reportes.html" class="nav-link"><i data-feather="bar-chart-2"></i> Reportes</a></li>
+            <li><a href="configuracion.html" class="nav-link"><i data-feather="settings"></i> Configuración</a></li>
         </ul>
-        <footer class="sidebar-footer">
-            <a href="#" id="logout-btn" role="button" class="contrast outline"><i data-feather="log-out"></i> Cerrar Sesión</a>
+        <footer class="border-t border-slate-200 px-4 py-6 dark:border-slate-700">
+            <button id="logout-btn" class="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" type="button"><i data-feather="log-out"></i> Cerrar Sesión</button>
         </footer>
     </nav>
 
-    <div class="main-content">
-        <header class="top-header">
-            <button class="hamburger" id="hamburger-menu" aria-label="Abrir menú"><i data-feather="menu"></i></button>
-            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo">
-            <div class="mobile-header-actions">
-                <button class="add-btn-mobile js-show-form" aria-label="Añadir Cuenta"><i data-feather="plus"></i></button>
-                <button id="theme-toggle" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+    <div class="lg:ml-72">
+        <header class="top-header flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:hidden">
+            <div class="flex items-center gap-2">
+                <button id="hamburger-menu" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Abrir menú"><i data-feather="menu"></i></button>
+                <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo h-10 w-auto">
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="js-show-form rounded-lg bg-primary-600 p-2 text-white shadow hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500" aria-label="Registrar Factura"><i data-feather="plus"></i></button>
+                <button id="theme-toggle" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
             </div>
         </header>
 
-        <main class="container">
-            <article id="form-section">
-                <header class="page-header">
-                    <h2>Registrar Nueva Cuenta por Pagar</h2>
-                    <button class="secondary outline js-hide-form"><i data-feather="x"></i> Cancelar</button>
+        <main class="main-content px-4 py-6 lg:px-10 lg:py-8">
+            <div class="mb-6 hidden items-center justify-between rounded-2xl border border-slate-200 bg-white px-6 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:flex">
+                <h1 class="text-2xl font-semibold">Cuentas por Pagar</h1>
+                <div class="flex items-center gap-2">
+                    <button class="js-show-form inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"><i data-feather="plus"></i> Registrar Factura</button>
+                    <button id="theme-toggle-desktop" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+                </div>
+            </div>
+
+            <article id="form-section" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <header class="flex flex-col gap-4 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-700">
+                    <h2 class="text-xl font-semibold">Registrar Nueva Cuenta por Pagar</h2>
+                    <button class="js-hide-form inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" type="button"><i data-feather="x"></i> Cancelar</button>
                 </header>
-                <form id="account-form">
-                    <label>Proveedor
-                        <select name="proveedor_id" id="proveedor-select" required>
+                <form id="account-form" class="mt-6 space-y-6">
+                    <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Proveedor
+                        <select name="proveedor_id" id="proveedor-select" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
                             <option value="">Seleccione un proveedor...</option>
                         </select>
                     </label>
-                    <div class="grid">
-                        <label>Número de Factura (Opcional)<input type="text" name="numero_factura"></label>
-                        <label>Monto Total a Pagar<input type="number" name="monto_total" step="0.01" required></label>
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Número de Factura (Opcional)
+                            <input type="text" name="numero_factura" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                        </label>
+                        <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Monto Total a Pagar
+                            <input type="number" name="monto_total" step="0.01" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                        </label>
                     </div>
-                    <label>Descripción (Opcional)</label>
-                    <textarea name="descripcion" rows="2" placeholder="Ej: Compra de pantallas iPhone"></textarea>
-                    <div class="grid">
-                        <label>Fecha de Emisión<input type="date" name="fecha_emision"></label>
-                        <label>Fecha de Vencimiento (para descuento)<input type="date" name="fecha_vencimiento"></label>
-                        <label>Descuento por Pronto Pago (%)<input type="number" name="descuento_pronto_pago" min="0" max="100" step="0.01" placeholder="Ej: 5 para 5%"></label>
+                    <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Descripción (Opcional)
+                        <textarea name="descripcion" rows="2" placeholder="Ej: Compra de pantallas iPhone" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900"></textarea>
+                    </label>
+                    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Fecha de Emisión
+                            <input type="date" name="fecha_emision" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                        </label>
+                        <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Fecha de Vencimiento (para descuento)
+                            <input type="date" name="fecha_vencimiento" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                        </label>
+                        <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Descuento por Pronto Pago (%)
+                            <input type="number" name="descuento_pronto_pago" min="0" max="100" step="0.01" placeholder="Ej: 5 para 5%" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                        </label>
                     </div>
-                    <hr>
-                    <button type="submit">Guardar Cuenta</button>
+                    <div class="flex justify-end">
+                        <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"><i data-feather="save"></i> Guardar Cuenta</button>
+                    </div>
                 </form>
             </article>
 
-            <article id="list-section">
-                <header class="page-header">
-                    <h2>Cuentas por Pagar</h2>
-                    <button class="primary create-btn js-show-form"><i data-feather="plus"></i> Registrar Factura</button>
+            <article id="list-section" class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <header class="flex flex-col gap-4 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-700">
+                    <h2 class="text-xl font-semibold">Cuentas por Pagar</h2>
+                    <button class="js-show-form inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900" type="button"><i data-feather="plus"></i> Registrar Factura</button>
                 </header>
-
-                <nav class="filter-tabs">
-                    <ul>
-                        <li><a href="#" class="active" data-filter="pendientes">Pendientes</a></li>
-                        <li><a href="#" data-filter="pagadas">Pagadas</a></li>
+                <nav class="filter-tabs mt-4">
+                    <ul class="flex flex-wrap gap-2">
+                        <li><a href="#" class="tab-link active" data-filter="pendientes">Pendientes</a></li>
+                        <li><a href="#" class="tab-link" data-filter="pagadas">Pagadas</a></li>
                     </ul>
                 </nav>
-
-                <div class="overflow-auto">
-                    <div id="accounts-tables-container">
-                        </div>
+                <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <div id="accounts-tables-container" class="divide-y divide-slate-200 text-sm dark:divide-slate-700"></div>
                 </div>
             </article>
         </main>
     </div>
 
-    <dialog id="payment-modal">
-        <article>
-            <header>
-                <a href="#close" aria-label="Close" class="close js-close-modal"></a>
-                Registrar Pago para Factura de <strong id="payment-provider-name"></strong>
+    <dialog id="payment-modal" class="modal-dialog">
+        <article class="space-y-4">
+            <header class="flex items-center justify-between border-b border-slate-200 pb-3 text-sm font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-100">
+                <span>Registrar Pago para Factura de <strong id="payment-provider-name" class="font-semibold"></strong></span>
+                <button type="button" class="js-close-modal rounded-lg border border-slate-300 px-2 py-1 text-xs text-slate-600 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700">Cerrar</button>
             </header>
-            <form id="payment-form">
-                <div id="payment-info"></div>
-                <label for="monto-abono">Monto a Abonar</label>
-                <input type="number" name="monto_abono" id="monto-abono" step="0.01" placeholder="0.00" required>
-                <label>Método de Pago
-                    <select name="metodo_pago">
+            <form id="payment-form" class="space-y-4">
+                <div id="payment-info" class="space-y-2 text-sm"></div>
+                <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Monto a Abonar
+                    <input type="number" name="monto_abono" id="monto-abono" step="0.01" placeholder="0.00" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                </label>
+                <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Método de Pago
+                    <select name="metodo_pago" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
                         <option value="Efectivo" selected>Efectivo</option>
                         <option value="Transferencia">Transferencia</option>
                     </select>
                 </label>
-                <label>Notas (Opcional)<textarea name="notas" rows="2"></textarea></label>
-                <footer>
-                    <button type="button" class="secondary outline js-close-modal">Cancelar</button>
-                    <button type="submit">Confirmar Pago</button>
-                </footer>
+                <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Notas (Opcional)
+                    <textarea name="notas" rows="2" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900"></textarea>
+                </label>
+                <div class="flex justify-end gap-3">
+                    <button type="button" class="js-close-modal inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700">Cancelar</button>
+                    <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500">Confirmar Pago</button>
+                </div>
             </form>
         </article>
     </dialog>
-    
-    <dialog id="history-modal">
-        <article>
-             <header>
-                <a href="#close" aria-label="Close" class="close js-close-modal"></a>
-                Historial de Pagos: Factura <strong id="history-factura-info"></strong>
+
+    <dialog id="history-modal" class="modal-dialog">
+        <article class="space-y-4">
+            <header class="flex items-center justify-between border-b border-slate-200 pb-3 text-sm font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-100">
+                <span>Historial de Pagos: Factura <strong id="history-factura-info" class="font-semibold"></strong></span>
+                <button type="button" class="js-close-modal rounded-lg border border-slate-300 px-2 py-1 text-xs text-slate-600 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700">Cerrar</button>
             </header>
-            <div id="payment-history-content"></div>
+            <div id="payment-history-content" class="space-y-3 text-sm"></div>
         </article>
     </dialog>
 

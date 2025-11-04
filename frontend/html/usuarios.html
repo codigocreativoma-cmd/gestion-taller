@@ -1,93 +1,125 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Usuarios - ServiTech</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        primary: {
+                            500: '#4f46e5',
+                            600: '#4338ca',
+                            700: '#3730a3'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
     <link rel="stylesheet" href="../css/custom.css">
 </head>
-<body>
-    <div class="overlay" id="overlay"></div>
+<body class="h-full bg-slate-100 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-100">
+    <div id="overlay" class="fixed inset-0 z-30 hidden bg-slate-900/60"></div>
 
-    <nav class="sidebar" id="sidebar">
-        <header class="sidebar-header">
-            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo">
+    <nav id="sidebar" class="sidebar fixed inset-y-0 left-0 z-40 flex w-72 transform flex-col border-r border-slate-200 bg-white shadow-xl transition-transform duration-300 dark:border-slate-700 dark:bg-slate-800 lg:translate-x-0">
+        <header class="flex h-20 items-center justify-center border-b border-slate-200 px-6 dark:border-slate-700">
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo h-12 w-auto">
         </header>
-        <ul class="sidebar-nav">
-            <li><a href="../index.html"><i data-feather="clipboard"></i> Órdenes</a></li>
-            <li><a href="inventario.html"><i data-feather="package"></i> Inventario</a></li>
-            <li><a href="proveedores.html"><i data-feather="truck"></i> Proveedores</a></li>
-            <li><a href="cuentas-pagar.html"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
-            <li><a href="caja.html"><i data-feather="dollar-sign"></i> Caja</a></li>
-            <li><a href="reportes.html"><i data-feather="bar-chart-2"></i> Reportes</a></li>
-            <li><a href="configuracion.html"><i data-feather="settings"></i> Configuración</a></li>
-            <li><a href="usuarios.html" class="active"><i data-feather="users"></i> Usuarios</a></li>
+        <ul class="flex flex-1 flex-col gap-1 px-4 py-6 text-sm font-medium">
+            <li><a href="../index.html" class="nav-link"><i data-feather="clipboard"></i> Órdenes</a></li>
+            <li><a href="inventario.html" class="nav-link"><i data-feather="package"></i> Inventario</a></li>
+            <li><a href="proveedores.html" class="nav-link"><i data-feather="truck"></i> Proveedores</a></li>
+            <li><a href="cuentas-pagar.html" class="nav-link"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
+            <li><a href="caja.html" class="nav-link"><i data-feather="dollar-sign"></i> Caja</a></li>
+            <li><a href="reportes.html" class="nav-link"><i data-feather="bar-chart-2"></i> Reportes</a></li>
+            <li><a href="configuracion.html" class="nav-link"><i data-feather="settings"></i> Configuración</a></li>
+            <li><a href="usuarios.html" class="nav-link active"><i data-feather="users"></i> Usuarios</a></li>
         </ul>
-        <footer class="sidebar-footer">
-            <a href="#" id="logout-btn" role="button" class="contrast outline"><i data-feather="log-out"></i> Cerrar Sesión</a>
+        <footer class="border-t border-slate-200 px-4 py-6 dark:border-slate-700">
+            <button id="logout-btn" class="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" type="button"><i data-feather="log-out"></i> Cerrar Sesión</button>
         </footer>
     </nav>
 
-    <div class="main-content">
-        <header class="top-header">
-            <button class="hamburger" id="hamburger-menu" aria-label="Abrir menú"><i data-feather="menu"></i></button>
-            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo">
-            <div class="mobile-header-actions">
-                <button class="add-btn-mobile js-show-form" aria-label="Añadir Usuario"><i data-feather="plus"></i></button>
-                <button id="theme-toggle" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+    <div class="lg:ml-72">
+        <header class="top-header flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:hidden">
+            <div class="flex items-center gap-2">
+                <button id="hamburger-menu" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Abrir menú"><i data-feather="menu"></i></button>
+                <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo h-10 w-auto">
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="js-show-form rounded-lg bg-primary-600 p-2 text-white shadow hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500" aria-label="Añadir Usuario"><i data-feather="plus"></i></button>
+                <button id="theme-toggle" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
             </div>
         </header>
 
-        <main class="container">
-            <article id="form-section">
-                <header class="page-header">
-                    <h2>Crear Nuevo Usuario</h2>
-                    <button class="secondary outline js-hide-form"><i data-feather="x"></i> Cancelar</button>
+        <main class="main-content px-4 py-6 lg:px-10 lg:py-8">
+            <div class="mb-6 hidden items-center justify-between rounded-2xl border border-slate-200 bg-white px-6 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:flex">
+                <h1 class="text-2xl font-semibold">Gestión de Usuarios</h1>
+                <div class="flex items-center gap-2">
+                    <button class="js-show-form inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"><i data-feather="plus"></i> Crear Usuario</button>
+                    <button id="theme-toggle-desktop" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+                </div>
+            </div>
+
+            <article id="form-section" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <header class="flex flex-col gap-4 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-700">
+                    <h2 class="text-xl font-semibold">Crear Nuevo Usuario</h2>
+                    <button class="js-hide-form inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" type="button"><i data-feather="x"></i> Cancelar</button>
                 </header>
-                <form id="user-form">
-                    <label>Nombre Completo
-                        <input type="text" name="nombre" required>
+                <form id="user-form" class="mt-6 space-y-6">
+                    <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Nombre Completo
+                        <input type="text" name="nombre" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
                     </label>
-                    <div class="grid">
-                        <label>Nombre de Usuario (para login)
-                            <input type="text" name="usuario" required>
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Nombre de Usuario (para login)
+                            <input type="text" name="usuario" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
                         </label>
-                        <label>Contraseña
-                            <input type="password" name="password" required>
+                        <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Contraseña
+                            <input type="password" name="password" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
                         </label>
                     </div>
-                    <label>Rol
-                        <select name="rol" required>
+                    <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Rol
+                        <select name="rol" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
                             <option value="" disabled selected>Seleccione un rol...</option>
                             <option value="administrador">Administrador</option>
                             <option value="tecnico">Técnico</option>
                             <option value="recepcionista">Recepcionista</option>
                         </select>
                     </label>
-                    <hr>
-                    <button type="submit">Crear Usuario</button>
+                    <div class="flex justify-end">
+                        <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"><i data-feather="save"></i> Crear Usuario</button>
+                    </div>
                 </form>
             </article>
 
-            <article id="list-section">
-                <header class="page-header">
-                    <h2>Gestión de Usuarios</h2>
-                    <button class="primary create-btn js-show-form"><i data-feather="plus"></i> Crear Usuario</button>
+            <article id="list-section" class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <header class="flex flex-col gap-4 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-700">
+                    <h2 class="text-xl font-semibold">Usuarios Registrados</h2>
+                    <button class="js-show-form inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900" type="button"><i data-feather="plus"></i> Crear Usuario</button>
                 </header>
-                <div class="overflow-auto">
-                    <table>
-                        <thead>
+                <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <table class="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
+                        <thead class="bg-slate-50 dark:bg-slate-900/40">
                             <tr>
-                                <th>Nombre</th>
-                                <th>Usuario</th>
-                                <th>Rol</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600 dark:text-slate-300">Nombre</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600 dark:text-slate-300">Usuario</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600 dark:text-slate-300">Rol</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600 dark:text-slate-300">Estado</th>
+                                <th class="px-4 py-3 text-right font-semibold text-slate-600 dark:text-slate-300">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="users-tbody">
-                            </tbody>
+                        <tbody id="users-tbody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
                     </table>
                 </div>
             </article>

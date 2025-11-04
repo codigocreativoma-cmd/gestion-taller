@@ -1,94 +1,118 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reportes - ServiTech</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        primary: {
+                            500: '#4f46e5',
+                            600: '#4338ca',
+                            700: '#3730a3'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
     <link rel="stylesheet" href="../css/custom.css">
     <link rel="stylesheet" href="../css/reportes.css">
 </head>
-<body>
-    <div class="overlay" id="overlay"></div>
+<body class="h-full bg-slate-100 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-100">
+    <div id="overlay" class="fixed inset-0 z-30 hidden bg-slate-900/60"></div>
 
-    <nav class="sidebar" id="sidebar">
-        <header class="sidebar-header">
-            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo">
+    <nav id="sidebar" class="sidebar fixed inset-y-0 left-0 z-40 flex w-72 transform flex-col border-r border-slate-200 bg-white shadow-xl transition-transform duration-300 dark:border-slate-700 dark:bg-slate-800 lg:translate-x-0">
+        <header class="flex h-20 items-center justify-center border-b border-slate-200 px-6 dark:border-slate-700">
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo h-12 w-auto">
         </header>
-        <ul class="sidebar-nav">
-            <li><a href="../index.html"><i data-feather="clipboard"></i> Órdenes</a></li>
-            <li><a href="inventario.html"><i data-feather="package"></i> Inventario</a></li>
-            <li><a href="proveedores.html"><i data-feather="truck"></i> Proveedores</a></li>
-            <li><a href="cuentas-pagar.html"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
-            <li><a href="caja.html"><i data-feather="dollar-sign"></i> Caja</a></li>
-            <li><a href="reportes.html" class="active"><i data-feather="bar-chart-2"></i> Reportes</a></li>
-            <li><a href="configuracion.html"><i data-feather="settings"></i> Configuración</a></li>
+        <ul class="flex flex-1 flex-col gap-1 px-4 py-6 text-sm font-medium">
+            <li><a href="../index.html" class="nav-link"><i data-feather="clipboard"></i> Órdenes</a></li>
+            <li><a href="inventario.html" class="nav-link"><i data-feather="package"></i> Inventario</a></li>
+            <li><a href="proveedores.html" class="nav-link"><i data-feather="truck"></i> Proveedores</a></li>
+            <li><a href="cuentas-pagar.html" class="nav-link"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
+            <li><a href="caja.html" class="nav-link"><i data-feather="dollar-sign"></i> Caja</a></li>
+            <li><a href="reportes.html" class="nav-link active"><i data-feather="bar-chart-2"></i> Reportes</a></li>
+            <li><a href="configuracion.html" class="nav-link"><i data-feather="settings"></i> Configuración</a></li>
         </ul>
-        <footer class="sidebar-footer">
-            <a href="#" id="logout-btn" role="button" class="contrast outline"><i data-feather="log-out"></i> Cerrar Sesión</a>
+        <footer class="border-t border-slate-200 px-4 py-6 dark:border-slate-700">
+            <button id="logout-btn" class="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" type="button"><i data-feather="log-out"></i> Cerrar Sesión</button>
         </footer>
     </nav>
 
-    <div class="main-content">
-        <header class="top-header">
-            <button class="hamburger" id="hamburger-menu" aria-label="Abrir menú"><i data-feather="menu"></i></button>
-            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo">
-            <div class="mobile-header-actions">
-                <button id="theme-toggle" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+    <div class="lg:ml-72">
+        <header class="top-header flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:hidden">
+            <div class="flex items-center gap-2">
+                <button id="hamburger-menu" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Abrir menú"><i data-feather="menu"></i></button>
+                <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo h-10 w-auto">
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="theme-toggle" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
             </div>
         </header>
 
-        <main class="container">
-            <div class="page-header">
-                <h2>Reporte de Ventas</h2>
+        <main class="main-content px-4 py-6 lg:px-10 lg:py-8">
+            <div class="mb-6 hidden items-center justify-between rounded-2xl border border-slate-200 bg-white px-6 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:flex">
+                <h1 class="text-2xl font-semibold">Reporte de Ventas</h1>
+                <button id="theme-toggle-desktop" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
             </div>
 
-            <article>
-                <form id="report-form">
-                    <div class="grid">
-                        <label for="fecha-inicio">Fecha de Inicio
-                            <input type="date" id="fecha-inicio" name="inicio">
+            <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <form id="report-form" class="space-y-4">
+                    <div class="grid gap-4 md:grid-cols-[1fr,1fr,auto] md:items-end">
+                        <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Fecha de Inicio
+                            <input type="date" id="fecha-inicio" name="inicio" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
                         </label>
-                        <label for="fecha-fin">Fecha de Fin
-                            <input type="date" id="fecha-fin" name="fin">
+                        <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Fecha de Fin
+                            <input type="date" id="fecha-fin" name="fin" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
                         </label>
-                        <button type="submit" class="contrast">Generar Reporte</button>
+                        <button type="submit" class="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"><i data-feather="pie-chart"></i> Generar Reporte</button>
                     </div>
                 </form>
             </article>
 
-            <section id="summary-section" aria-busy="true">
-                <div class="grid">
-                    <article class="summary-card">
-                        <header>Total Ingresos</header>
-                        <h2 id="total-ingresos">$0.00</h2>
-                    </article>
-                    <article class="summary-card">
-                        <header>Costo de Ventas (CPV)</header>
-                        <h2 id="total-costos">$0.00</h2>
-                    </article>
-                    <article class="summary-card profit">
-                        <header>Ganancia Bruta</header>
-                        <h2 id="ganancia-bruta">$0.00</h2>
-                    </article>
-                </div>
+            <section id="summary-section" class="mt-6 grid gap-4 lg:grid-cols-3" aria-busy="true">
+                <article class="summary-card rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                    <header class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Total Ingresos</header>
+                    <h2 id="total-ingresos" class="mt-2 text-3xl font-bold text-primary-600 dark:text-primary-300">$0.00</h2>
+                </article>
+                <article class="summary-card rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                    <header class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Costo de Ventas (CPV)</header>
+                    <h2 id="total-costos" class="mt-2 text-3xl font-bold text-primary-600 dark:text-primary-300">$0.00</h2>
+                </article>
+                <article class="summary-card profit rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                    <header class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Ganancia Bruta</header>
+                    <h2 id="ganancia-bruta" class="mt-2 text-3xl font-bold text-emerald-500">$0.00</h2>
+                </article>
             </section>
-            
-            <article id="details-section">
-                <header><h6>Detalle de Transacciones</h6></header>
-                <div class="overflow-auto">
-                    <table class="striped">
-                        <thead>
+
+            <article id="details-section" class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <header class="mb-4 flex items-center justify-between">
+                    <h2 class="text-xl font-semibold">Detalle de Transacciones</h2>
+                </header>
+                <div class="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <table class="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
+                        <thead class="bg-slate-50 dark:bg-slate-900/40">
                             <tr>
-                                <th>ID Venta</th>
-                                <th>Fecha</th>
-                                <th>Cliente / Descripción</th>
-                                <th>Total</th>
-                                <th>Método de Pago</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600 dark:text-slate-300">ID Venta</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600 dark:text-slate-300">Fecha</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600 dark:text-slate-300">Cliente / Descripción</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600 dark:text-slate-300">Total</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600 dark:text-slate-300">Método de Pago</th>
                             </tr>
                         </thead>
-                        <tbody id="report-details-tbody">
-                            </tbody>
+                        <tbody id="report-details-tbody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
                     </table>
                 </div>
             </article>

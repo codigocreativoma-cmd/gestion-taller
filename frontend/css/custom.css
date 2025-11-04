@@ -1,3 +1,30 @@
+:root {
+    --pico-border: rgba(148, 163, 184, 0.45);
+    --pico-muted-border-color: rgba(148, 163, 184, 0.3);
+    --pico-muted-background-color: #f1f5f9;
+    --pico-card-background-color: #ffffff;
+    --pico-secondary-foreground: #475569;
+    --pico-primary: #4338ca;
+    --pico-border-radius: 1rem;
+    --pico-color: var(--pico-primary);
+    --pico-border-color: var(--pico-border);
+    --pico-color-red-500: #ef4444;
+    --pico-color-green-550: #22c55e;
+}
+
+html.dark {
+    --pico-border: rgba(71, 85, 105, 0.6);
+    --pico-muted-border-color: rgba(71, 85, 105, 0.55);
+    --pico-muted-background-color: #1e293b;
+    --pico-card-background-color: #111827;
+    --pico-secondary-foreground: #cbd5f5;
+    --pico-primary: #a5b4fc;
+    --pico-color: var(--pico-primary);
+    --pico-border-color: var(--pico-border);
+    --pico-color-red-500: #f87171;
+    --pico-color-green-550: #34d399;
+}
+
 body {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -50,6 +77,83 @@ body {
 body.dark .nav-link.active,
 html.dark .nav-link.active {
     background: linear-gradient(135deg, rgb(165 180 252), rgb(99 102 241));
+}
+
+button,
+a[role="button"],
+.primary,
+.secondary,
+.outline,
+.contrast {
+    font-family: inherit;
+}
+
+.primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--pico-primary);
+    background: linear-gradient(135deg, #4f46e5, #4338ca);
+    color: #fff;
+    padding: 0.5rem 1.1rem;
+    font-weight: 600;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+.primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(79, 70, 229, 0.25);
+    background: linear-gradient(135deg, #4338ca, #3730a3);
+}
+
+.outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--pico-muted-border-color);
+    background-color: transparent;
+    color: inherit;
+    padding: 0.45rem 1rem;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.outline:hover {
+    background-color: rgba(148, 163, 184, 0.15);
+    color: rgb(30 64 175);
+    border-color: rgb(99 102 241);
+}
+
+.secondary.outline,
+.outline.secondary {
+    color: var(--pico-secondary-foreground);
+}
+
+.contrast {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, #0ea5e9, #2563eb);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.contrast:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 22px rgba(14, 165, 233, 0.25);
+}
+
+.small-btn {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
 }
 
 .filter-tabs {
@@ -124,6 +228,104 @@ body.form-active #list-section {
 .action-buttons a:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(15, 23, 42, 0.15);
+}
+
+mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background-color: rgba(99, 102, 241, 0.18);
+    color: rgb(79 70 229);
+}
+
+mark.secondary {
+    background-color: rgba(250, 204, 21, 0.25);
+    color: #b45309;
+}
+
+html.dark mark {
+    background-color: rgba(165, 180, 252, 0.15);
+    color: rgb(165 180 252);
+}
+
+html.dark mark.secondary {
+    background-color: rgba(250, 204, 21, 0.2);
+    color: #facc15;
+}
+
+#product-search-results {
+    background: var(--pico-card-background-color);
+    border-radius: 1.25rem;
+    border: 1px solid var(--pico-muted-border-color);
+    overflow: hidden;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--pico-muted-border-color);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.list-item:last-child {
+    border-bottom: none;
+}
+
+.list-item:hover {
+    background-color: rgba(99, 102, 241, 0.1);
+}
+
+.list-item .info strong {
+    display: block;
+}
+
+.list-item .info small {
+    color: var(--pico-secondary-foreground);
+}
+
+.list-item .price {
+    font-weight: 600;
+    color: rgb(22 163 74);
+}
+
+html.dark .list-item:hover {
+    background-color: rgba(148, 163, 184, 0.12);
+}
+
+html.dark .list-item .price {
+    color: #34d399;
+}
+
+dialog.modal-dialog {
+    border: none;
+    padding: 0;
+    border-radius: 1.5rem;
+    background: transparent;
+}
+
+dialog.modal-dialog::backdrop {
+    background: rgba(15, 23, 42, 0.45);
+}
+
+dialog.modal-dialog article {
+    background: var(--pico-card-background-color);
+    border-radius: 1.5rem;
+    border: 1px solid var(--pico-border);
+    padding: 1.5rem;
+    min-width: min(90vw, 520px);
+}
+
+html.dark dialog.modal-dialog article {
+    background: #0f172a;
+    border-color: rgba(148, 163, 184, 0.3);
 }
 
 #post-creation-modal::backdrop {
