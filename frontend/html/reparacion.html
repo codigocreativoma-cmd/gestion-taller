@@ -1,139 +1,198 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Reparación - ServiTech</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        primary: {
+                            500: '#4f46e5',
+                            600: '#4338ca',
+                            700: '#3730a3'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
     <link rel="stylesheet" href="../css/custom.css">
     <link rel="stylesheet" href="../css/reparacion.css">
 </head>
-<body class="reparacion-page">
+<body class="h-full bg-slate-100 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-100">
+    <div id="overlay" class="fixed inset-0 z-30 hidden bg-slate-900/60"></div>
 
-    <div class="overlay" id="overlay"></div>
-
-    <nav class="sidebar" id="sidebar">
-        <header class="sidebar-header">
-            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo">
+    <nav id="sidebar" class="sidebar fixed inset-y-0 left-0 z-40 flex w-72 transform flex-col border-r border-slate-200 bg-white shadow-xl transition-transform duration-300 dark:border-slate-700 dark:bg-slate-800 lg:translate-x-0">
+        <header class="flex h-20 items-center justify-center border-b border-slate-200 px-6 dark:border-slate-700">
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo h-12 w-auto">
         </header>
-        <ul class="sidebar-nav">
-            <li><a href="../index.html" class="active"><i data-feather="clipboard"></i> Órdenes</a></li>
-            <li><a href="inventario.html"><i data-feather="package"></i> Inventario</a></li>
-            <li><a href="proveedores.html"><i data-feather="truck"></i> Proveedores</a></li>
-            <li><a href="cuentas-pagar.html"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
-            <li><a href="caja.html"><i data-feather="dollar-sign"></i> Caja</a></li>
-            <li><a href="reportes.html"><i data-feather="bar-chart-2"></i> Reportes</a></li>
-            <li><a href="configuracion.html"><i data-feather="settings"></i> Configuración</a></li>
+        <ul class="flex flex-1 flex-col gap-1 px-4 py-6 text-sm font-medium">
+            <li><a href="../index.html" class="nav-link active"><i data-feather="clipboard"></i> Órdenes</a></li>
+            <li><a href="inventario.html" class="nav-link"><i data-feather="package"></i> Inventario</a></li>
+            <li><a href="proveedores.html" class="nav-link"><i data-feather="truck"></i> Proveedores</a></li>
+            <li><a href="cuentas-pagar.html" class="nav-link"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
+            <li><a href="caja.html" class="nav-link"><i data-feather="dollar-sign"></i> Caja</a></li>
+            <li><a href="reportes.html" class="nav-link"><i data-feather="bar-chart-2"></i> Reportes</a></li>
+            <li><a href="configuracion.html" class="nav-link"><i data-feather="settings"></i> Configuración</a></li>
         </ul>
-        <footer class="sidebar-footer">
-            <a href="#" id="logout-btn" role="button" class="contrast outline"><i data-feather="log-out"></i> Cerrar Sesión</a>
+        <footer class="border-t border-slate-200 px-4 py-6 dark:border-slate-700">
+            <button id="logout-btn" class="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" type="button"><i data-feather="log-out"></i> Cerrar Sesión</button>
         </footer>
     </nav>
 
-    <div class="main-content">
-        <header class="top-header">
-            <button class="hamburger" id="hamburger-menu" aria-label="Abrir menú"><i data-feather="menu"></i></button>
-            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo">
-            <div class="mobile-header-actions"></div>
+    <div class="lg:ml-72">
+        <header class="top-header flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:hidden">
+            <div class="flex items-center gap-2">
+                <button id="hamburger-menu" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Abrir menú"><i data-feather="menu"></i></button>
+                <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo h-10 w-auto">
+            </div>
+            <button id="theme-toggle" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
         </header>
 
-        <main class="container">
-            <div class="page-header">
-                <h2>Gestión de Orden #<span id="orden-id-titulo">...</span></h2>
-                <a href="../index.html" role="button" class="secondary outline"><i data-feather="arrow-left"></i> Volver a la lista</a>
+        <main class="main-content px-4 py-6 lg:px-10 lg:py-8">
+            <div class="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white px-6 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:flex-row lg:items-center lg:justify-between">
+                <h1 class="text-2xl font-semibold">Gestión de Orden #<span id="orden-id-titulo">...</span></h1>
+                <div class="flex items-center gap-2">
+                    <a href="../index.html" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700"><i data-feather="arrow-left"></i> Volver a la lista</a>
+                    <button id="theme-toggle-desktop" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+                </div>
             </div>
 
-            <div class="reparacion-grid">
-                <article id="info-section">
-                    <div aria-busy="true">Cargando información...</div>
+            <div class="reparacion-grid gap-6 lg:grid-cols-2">
+                <article id="info-section" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                    <div aria-busy="true" class="text-sm text-slate-500 dark:text-slate-400">Cargando información...</div>
                 </article>
 
-                <article id="actions-section">
-                    <form id="reparacion-form">
-                        <fieldset>
-                            <legend>Estado de la Reparación</legend>
-                            <label for="estado-select">Cambiar estado:</label>
-                            <select id="estado-select" name="estado">
-                                <option value="Recibido">Recibido</option>
-                                <option value="En Diagnóstico">En Diagnóstico</option>
-                                <option value="Esperando Aprobación de Cliente">Esperando Aprobación</option>
-                                <option value="Esperando Repuesto">Esperando Repuesto</option>
-                                <option value="En Reparación">En Reparación</option>
-                                <option value="Reparado">Reparado</option>
-                                <option value="Listo para Entrega">Listo para Entrega</option>
-                                <option value="Entregado">Entregado</option>
-                                <option value="Sin Solución">Sin Solución</option>
-                            </select>
+                <article id="actions-section" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                    <form id="reparacion-form" class="space-y-6">
+                        <fieldset class="space-y-3">
+                            <legend class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Estado de la Reparación</legend>
+                            <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Cambiar estado:
+                                <select id="estado-select" name="estado" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                                    <option value="Recibido">Recibido</option>
+                                    <option value="En Diagnóstico">En Diagnóstico</option>
+                                    <option value="Esperando Aprobación de Cliente">Esperando Aprobación</option>
+                                    <option value="Esperando Repuesto">Esperando Repuesto</option>
+                                    <option value="En Reparación">En Reparación</option>
+                                    <option value="Reparado">Reparado</option>
+                                    <option value="Listo para Entrega">Listo para Entrega</option>
+                                    <option value="Entregado">Entregado</option>
+                                    <option value="Sin Solución">Sin Solución</option>
+                                </select>
+                            </label>
                         </fieldset>
-                        <fieldset>
-                            <legend>Diagnóstico y Notas Técnicas</legend>
-                            <textarea id="diagnostico-tecnico" name="diagnostico_tecnico" rows="5" placeholder="Detalles técnicos de la falla..."></textarea>
+
+                        <fieldset class="space-y-3">
+                            <legend class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Diagnóstico y Notas Técnicas</legend>
+                            <textarea id="diagnostico-tecnico" name="diagnostico_tecnico" rows="5" placeholder="Detalles técnicos de la falla..." class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900"></textarea>
                         </fieldset>
-                        <fieldset>
-                            <legend>Repuestos Utilizados</legend>
-                            <table class="striped">
-                                <thead><tr><th>Repuesto</th><th>Costo</th><th>Acción</th></tr></thead>
-                                <tbody id="used-parts-tbody"></tbody>
-                            </table>
-                            <p class="cost-summary"><strong>Costo Total de Repuestos:</strong> <span id="total-cost-span">$0.00</span></p>
-                            <div class="grid">
-                                <button type="button" id="add-from-inventory-btn" class="secondary outline"><i data-feather="package"></i> Añadir desde Inventario</button>
-                                <button type="button" id="add-manual-part-btn" class="secondary outline"><i data-feather="plus-circle"></i> Añadir Repuesto Manual</button>
+
+                        <fieldset class="space-y-4">
+                            <legend class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Repuestos Utilizados</legend>
+                            <div class="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700">
+                                <table class="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
+                                    <thead class="bg-slate-50 dark:bg-slate-900/40">
+                                        <tr>
+                                            <th class="px-4 py-3 text-left font-semibold text-slate-600 dark:text-slate-300">Repuesto</th>
+                                            <th class="px-4 py-3 text-left font-semibold text-slate-600 dark:text-slate-300">Costo</th>
+                                            <th class="px-4 py-3 text-right font-semibold text-slate-600 dark:text-slate-300">Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="used-parts-tbody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
+                                </table>
+                            </div>
+                            <p class="cost-summary text-right text-sm font-semibold text-slate-600 dark:text-slate-300">Costo Total de Repuestos: <span id="total-cost-span" class="text-primary-600 dark:text-primary-300">$0.00</span></p>
+                            <div class="grid gap-3 sm:grid-cols-2">
+                                <button type="button" id="add-from-inventory-btn" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700"><i data-feather="package"></i> Añadir desde Inventario</button>
+                                <button type="button" id="add-manual-part-btn" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700"><i data-feather="plus-circle"></i> Añadir Repuesto Manual</button>
                             </div>
                         </fieldset>
-                        <fieldset>
-                            <legend>Finalización</legend>
-                             <label for="precio-final">Precio Final para el Cliente</label>
-                            <input type="number" id="precio-final" name="precio_final" step="0.01" placeholder="0.00">
+
+                        <fieldset class="space-y-3">
+                            <legend class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Finalización</legend>
+                            <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Precio Final para el Cliente
+                                <input type="number" id="precio-final" name="precio_final" step="0.01" placeholder="0.00" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                            </label>
                         </fieldset>
-                        <button type="submit" id="guardar-cambios-btn"><i data-feather="save"></i> Guardar Cambios</button>
-                        <button type="button" id="send-to-cashier-btn" class="contrast hidden"><i data-feather="shopping-cart"></i> Finalizar y Enviar a Caja</button>
+
+                        <button type="submit" id="guardar-cambios-btn" class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"><i data-feather="save"></i> Guardar Cambios</button>
+                        <button type="button" id="send-to-cashier-btn" class="contrast hidden inline-flex w-full items-center justify-center gap-2 rounded-lg border border-primary-500 px-4 py-2 text-sm font-semibold text-primary-600 transition hover:bg-primary-50 dark:border-primary-400 dark:text-primary-300 dark:hover:bg-slate-900"><i data-feather="shopping-cart"></i> Finalizar y Enviar a Caja</button>
                     </form>
                 </article>
             </div>
         </main>
     </div>
 
-    <dialog id="inventory-modal">
-        <article>
-            <header><a href="#close" aria-label="Close" class="close js-close-modal"></a>Buscar y Añadir Repuesto</header>
-            <input type="search" id="inventory-search-input" placeholder="Buscar por nombre...">
-            <div id="inventory-search-results"></div>
+    <dialog id="inventory-modal" class="modal-dialog">
+        <article class="space-y-4">
+            <header class="flex items-center justify-between border-b border-slate-200 pb-3 text-sm font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-100">
+                <span>Buscar y Añadir Repuesto</span>
+                <button type="button" class="js-close-modal rounded-lg border border-slate-300 px-2 py-1 text-xs text-slate-600 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700">Cerrar</button>
+            </header>
+            <input type="search" id="inventory-search-input" placeholder="Buscar por nombre..." class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+            <div id="inventory-search-results" class="space-y-2"></div>
         </article>
     </dialog>
-    <dialog id="manual-part-modal">
-        <article>
-            <header><a href="#close" aria-label="Close" class="close js-close-modal"></a>Añadir Repuesto Manual</header>
-            <form id="manual-part-form">
-                <label>Nombre del Repuesto<input type="text" name="nombre" required></label>
-                <label>Costo del Repuesto (Para el taller)<input type="number" name="costo" step="0.01" placeholder="0.00" required></label>
-                <footer>
-                    <button type="button" class="secondary js-close-modal">Cancelar</button>
-                    <button type="submit">Añadir</button>
-                </footer>
+
+    <dialog id="manual-part-modal" class="modal-dialog">
+        <article class="space-y-4">
+            <header class="flex items-center justify-between border-b border-slate-200 pb-3 text-sm font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-100">
+                <span>Añadir Repuesto Manual</span>
+                <button type="button" class="js-close-modal rounded-lg border border-slate-300 px-2 py-1 text-xs text-slate-600 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700">Cerrar</button>
+            </header>
+            <form id="manual-part-form" class="space-y-4">
+                <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Nombre del Repuesto
+                    <input type="text" name="nombre" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                </label>
+                <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Costo del Repuesto (Para el taller)
+                    <input type="number" name="costo" step="0.01" placeholder="0.00" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                </label>
+                <div class="flex justify-end gap-3">
+                    <button type="button" class="js-close-modal inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700">Cancelar</button>
+                    <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500">Añadir</button>
+                </div>
             </form>
         </article>
     </dialog>
-    <dialog id="evidence-modal">
-        <article>
-             <header>
-                <a href="#close" aria-label="Close" class="close js-close-modal"></a>
-                Evidencia Fotográfica de Ingreso
+
+    <dialog id="evidence-modal" class="modal-dialog">
+        <article class="space-y-4">
+            <header class="flex items-center justify-between border-b border-slate-200 pb-3 text-sm font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-100">
+                <span>Evidencia Fotográfica de Ingreso</span>
+                <button type="button" class="js-close-modal rounded-lg border border-slate-300 px-2 py-1 text-xs text-slate-600 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700">Cerrar</button>
             </header>
             <div id="evidence-modal-gallery" class="evidence-gallery"></div>
         </article>
     </dialog>
-    <dialog id="pattern-view-modal">
-        <article>
-             <header>
-                <a href="#close" aria-label="Close" class="close js-close-modal"></a>
-                Patrón de Desbloqueo Registrado
+
+    <dialog id="pattern-view-modal" class="modal-dialog">
+        <article class="space-y-4">
+            <header class="flex items-center justify-between border-b border-slate-200 pb-3 text-sm font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-100">
+                <span>Patrón de Desbloqueo Registrado</span>
+                <button type="button" class="js-close-modal rounded-lg border border-slate-300 px-2 py-1 text-xs text-slate-600 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700">Cerrar</button>
             </header>
             <div class="pattern-view-wrapper">
                 <div id="pattern-view-grid" class="pattern-grid-view">
-                    <div class="pattern-dot-view" data-id="1"></div><div class="pattern-dot-view" data-id="2"></div><div class="pattern-dot-view" data-id="3"></div>
-                    <div class="pattern-dot-view" data-id="4"></div><div class="pattern-dot-view" data-id="5"></div><div class="pattern-dot-view" data-id="6"></div>
-                    <div class="pattern-dot-view" data-id="7"></div><div class="pattern-dot-view" data-id="8"></div><div class="pattern-dot-view" data-id="9"></div>
+                    <div class="pattern-dot-view" data-id="1"></div>
+                    <div class="pattern-dot-view" data-id="2"></div>
+                    <div class="pattern-dot-view" data-id="3"></div>
+                    <div class="pattern-dot-view" data-id="4"></div>
+                    <div class="pattern-dot-view" data-id="5"></div>
+                    <div class="pattern-dot-view" data-id="6"></div>
+                    <div class="pattern-dot-view" data-id="7"></div>
+                    <div class="pattern-dot-view" data-id="8"></div>
+                    <div class="pattern-dot-view" data-id="9"></div>
                 </div>
                 <canvas id="pattern-view-canvas"></canvas>
             </div>

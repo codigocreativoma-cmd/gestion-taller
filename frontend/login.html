@@ -1,40 +1,87 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - ServiTech</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        primary: {
+                            500: '#4f46e5',
+                            600: '#4338ca',
+                            700: '#3730a3'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="css/custom.css">
 </head>
-<body class="login-page-body">
-
-    <div class="login-container">
-        <div class="login-image-section">
-            </div>
-
-        <div class="login-form-section">
-            <article class="login-card">
+<body class="min-h-screen bg-slate-100 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-100">
+    <div class="relative flex min-h-screen flex-col overflow-hidden lg:flex-row">
+        <aside class="relative hidden flex-1 items-center justify-center lg:flex">
+            <img src="img/login-background.jpg" alt="Área de trabajo de un taller técnico" class="absolute inset-0 h-full w-full object-cover">
+            <div class="absolute inset-0 bg-slate-900/70"></div>
+            <div class="relative z-10 flex h-full w-full flex-col justify-between p-10 text-slate-100">
                 <header>
-                    <img src="img/logo.png" alt="Logo ServiTech" class="login-logo">
-                    <h3>Acceso al Sistema</h3>
+                    <img src="img/logo.png" alt="Logo ServiTech" class="h-12 w-auto">
                 </header>
-                
-                <form id="login-form">
-                    <label for="usuario">Usuario</label>
-                    <input type="text" id="usuario" name="usuario" placeholder="Ej: admin" required>
-                    
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" required>
-                    
-                    <small id="error-message" class="error-text"></small>
-                    
-                    <button type="submit" id="login-button">Ingresar</button>
+                <div class="space-y-6">
+                    <h1 class="text-3xl font-semibold leading-tight">Gestiona tu taller con una interfaz clara y moderna.</h1>
+                    <p class="max-w-md text-base text-slate-200/90">Controla las órdenes de reparación, inventario, proveedores y reportes desde un solo lugar. Tu equipo puede colaborar de forma segura, estés donde estés.</p>
+                </div>
+                <footer class="text-sm text-slate-300/80">
+                    &copy; <span id="login-year"></span> ServiTech. Todos los derechos reservados.
+                </footer>
+            </div>
+        </aside>
+
+        <main class="relative flex w-full flex-1 flex-col items-center justify-center px-6 py-12 sm:px-10 lg:px-16">
+            <button id="theme-toggle" class="absolute right-6 top-6 rounded-full border border-slate-300 bg-white/80 p-2 text-slate-700 backdrop-blur transition hover:bg-white dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-100 dark:hover:bg-slate-700" aria-label="Cambiar tema">
+                <i data-feather="moon" class="h-5 w-5"></i>
+            </button>
+
+            <div class="w-full max-w-md">
+                <header class="mb-10 text-center">
+                    <img src="img/logo.png" alt="Logo ServiTech" class="mx-auto h-14 w-auto">
+                    <h2 class="mt-6 text-3xl font-semibold tracking-tight">Inicia sesión para continuar</h2>
+                    <p class="mt-3 text-sm text-slate-500 dark:text-slate-400">Introduce tus credenciales para acceder al panel administrativo del taller.</p>
+                </header>
+
+                <form id="login-form" class="rounded-2xl border border-slate-200 bg-white/80 p-8 shadow-xl backdrop-blur dark:border-slate-700 dark:bg-slate-800/80">
+                    <div class="space-y-5">
+                        <label class="block text-left text-sm font-medium text-slate-700 dark:text-slate-200" for="usuario">Usuario</label>
+                        <input type="text" id="usuario" name="usuario" placeholder="Ej: admin" required class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100">
+
+                        <label class="block text-left text-sm font-medium text-slate-700 dark:text-slate-200" for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" required class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100">
+
+                        <p id="error-message" class="hidden rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-600 dark:border-rose-700/60 dark:bg-rose-500/10 dark:text-rose-200" role="alert"></p>
+
+                        <button type="submit" id="login-button" class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-900">
+                            <span>Ingresar</span>
+                        </button>
+                    </div>
                 </form>
-            </article>
-        </div>
+
+                <p class="mt-8 text-center text-xs text-slate-500 dark:text-slate-500">¿Olvidaste tu contraseña? Ponte en contacto con el administrador del sistema para recuperarla.</p>
+            </div>
+        </main>
     </div>
 
+    <script src="https://unpkg.com/feather-icons"></script>
     <script src="js/login.js"></script>
 </body>
 </html>

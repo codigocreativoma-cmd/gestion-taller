@@ -1,84 +1,112 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuración - ServiTech</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        primary: {
+                            500: '#4f46e5',
+                            600: '#4338ca',
+                            700: '#3730a3'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
     <link rel="stylesheet" href="../css/custom.css">
 </head>
-<body>
-    <div class="overlay" id="overlay"></div>
+<body class="h-full bg-slate-100 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-100">
+    <div id="overlay" class="fixed inset-0 z-30 hidden bg-slate-900/60"></div>
 
-    <nav class="sidebar" id="sidebar">
-        <header class="sidebar-header">
-            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo">
+    <nav id="sidebar" class="sidebar fixed inset-y-0 left-0 z-40 flex w-72 transform flex-col border-r border-slate-200 bg-white shadow-xl transition-transform duration-300 dark:border-slate-700 dark:bg-slate-800 lg:translate-x-0">
+        <header class="flex h-20 items-center justify-center border-b border-slate-200 px-6 dark:border-slate-700">
+            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo h-12 w-auto">
         </header>
-        <ul class="sidebar-nav">
-            <li><a href="../index.html"><i data-feather="clipboard"></i> Órdenes</a></li>
-            <li><a href="inventario.html"><i data-feather="package"></i> Inventario</a></li>
-            <li><a href="proveedores.html"><i data-feather="truck"></i> Proveedores</a></li>
-            <li><a href="cuentas-pagar.html"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
-            <li><a href="caja.html"><i data-feather="dollar-sign"></i> Caja</a></li>
-            <li><a href="reportes.html"><i data-feather="bar-chart-2"></i> Reportes</a></li>
-            <li><a href="configuracion.html" class="active"><i data-feather="settings"></i> Configuración</a></li>
+        <ul class="flex flex-1 flex-col gap-1 px-4 py-6 text-sm font-medium">
+            <li><a href="../index.html" class="nav-link"><i data-feather="clipboard"></i> Órdenes</a></li>
+            <li><a href="inventario.html" class="nav-link"><i data-feather="package"></i> Inventario</a></li>
+            <li><a href="proveedores.html" class="nav-link"><i data-feather="truck"></i> Proveedores</a></li>
+            <li><a href="cuentas-pagar.html" class="nav-link"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
+            <li><a href="caja.html" class="nav-link"><i data-feather="dollar-sign"></i> Caja</a></li>
+            <li><a href="reportes.html" class="nav-link"><i data-feather="bar-chart-2"></i> Reportes</a></li>
+            <li><a href="configuracion.html" class="nav-link active"><i data-feather="settings"></i> Configuración</a></li>
         </ul>
-        <footer class="sidebar-footer">
-            <a href="#" id="logout-btn" role="button" class="contrast outline"><i data-feather="log-out"></i> Cerrar Sesión</a>
+        <footer class="border-t border-slate-200 px-4 py-6 dark:border-slate-700">
+            <button id="logout-btn" class="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" type="button"><i data-feather="log-out"></i> Cerrar Sesión</button>
         </footer>
     </nav>
 
-    <div class="main-content">
-        <header class="top-header">
-            <button class="hamburger" id="hamburger-menu" aria-label="Abrir menú"><i data-feather="menu"></i></button>
-            <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo">
-            <div class="mobile-header-actions">
-                <button id="theme-toggle" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+    <div class="lg:ml-72">
+        <header class="top-header flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:hidden">
+            <div class="flex items-center gap-2">
+                <button id="hamburger-menu" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Abrir menú"><i data-feather="menu"></i></button>
+                <img src="../img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo h-10 w-auto">
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="theme-toggle" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
             </div>
         </header>
 
-        <main class="container">
-            <article>
-                <header class="page-header">
-                    <h2>Configuración del Sistema</h2>
-                </header>
-                
-                <form id="config-form">
-                    <fieldset>
-                        <legend>Logo de la Empresa</legend>
-                        <div class="logo-upload-container">
-                            <img id="logo-preview" src="../img/logo.png" alt="Vista previa del logo" class="logo-preview">
-                            <div>
-                                <label for="logo-input">Seleccionar nuevo logo (.png)</label>
-                                <input type="file" id="logo-input" name="logo_file" accept="image/png">
-                                <small>La imagen se guardará como 'logo.png'. Se recomienda un formato horizontal y transparente.</small>
+        <main class="main-content px-4 py-6 lg:px-10 lg:py-8">
+            <div class="mb-6 hidden items-center justify-between rounded-2xl border border-slate-200 bg-white px-6 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:flex">
+                <h1 class="text-2xl font-semibold">Configuración del Sistema</h1>
+                <button id="theme-toggle-desktop" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+            </div>
+
+            <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <form id="config-form" class="space-y-8">
+                    <section class="space-y-4">
+                        <h2 class="text-lg font-semibold">Logo de la Empresa</h2>
+                        <div class="flex flex-col gap-4 rounded-2xl border border-dashed border-slate-300 p-4 sm:flex-row sm:items-center dark:border-slate-600">
+                            <img id="logo-preview" src="../img/logo.png" alt="Vista previa del logo" class="h-20 w-20 rounded-lg object-contain bg-slate-100 p-2 dark:bg-slate-900">
+                            <div class="space-y-2 text-sm">
+                                <label for="logo-input" class="block font-medium text-slate-600 dark:text-slate-300">Seleccionar nuevo logo (.png)</label>
+                                <input type="file" id="logo-input" name="logo_file" accept="image/png" class="block w-full text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-primary-700">
+                                <p class="text-xs text-slate-500 dark:text-slate-400">La imagen se guardará como <strong>logo.png</strong>. Se recomienda un formato horizontal con fondo transparente.</p>
                             </div>
                         </div>
-                    </fieldset>
-                    
-                    <fieldset>
-                        <legend>Datos de la Empresa</legend>
-                        <label>Nombre de la Empresa
-                            <input type="text" name="nombre_empresa" required>
-                        </label>
-                        <label>Dirección
-                            <input type="text" name="direccion_empresa">
-                        </label>
-                        <label>Teléfono
-                            <input type="tel" name="telefono_empresa">
-                        </label>
-                    </fieldset>
-                    
-                    <fieldset>
-                        <legend>Términos y Condiciones (para Recibos de Orden)</legend>
-                        <label>
+                    </section>
+
+                    <section class="space-y-4">
+                        <h2 class="text-lg font-semibold">Datos de la Empresa</h2>
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Nombre de la Empresa
+                                <input type="text" name="nombre_empresa" required class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                            </label>
+                            <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Dirección
+                                <input type="text" name="direccion_empresa" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                            </label>
+                            <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">Teléfono
+                                <input type="tel" name="telefono_empresa" class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="space-y-4">
+                        <h2 class="text-lg font-semibold">Términos y Condiciones (para Recibos de Orden)</h2>
+                        <label class="block text-sm font-medium text-slate-600 dark:text-slate-300">
                             Escribe cada política en una nueva línea.
-                            <textarea name="politicas" rows="8" placeholder="Política 1...\nPolítica 2...\nPolítica 3..."></textarea>
+                            <textarea name="politicas" rows="8" placeholder="Política 1...&#10;Política 2...&#10;Política 3..." class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900"></textarea>
                         </label>
-                    </fieldset>
-                    
-                    <hr>
-                    <button type="submit" id="save-config-btn">Guardar Cambios</button>
+                    </section>
+
+                    <div class="flex justify-end">
+                        <button type="submit" id="save-config-btn" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"><i data-feather="save"></i> Guardar Cambios</button>
+                    </div>
                 </form>
             </article>
         </main>

@@ -1,24 +1,39 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recibo de Orden - ServiTech</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="../css/custom.css">
     <link rel="stylesheet" href="../css/recibo.css">
 </head>
-<body class="receipt-page">
-
+<body class="receipt-page bg-slate-100 text-slate-900 antialiased">
     <div class="print-controls">
-        <div class="container">
-            <fieldset>
-                <legend>Formato de Impresión</legend>
-                <label for="format-a4"><input type="radio" id="format-a4" name="print-format" value="a4" checked> Nota de Entrega (A4)</label>
-                <label for="format-thermal"><input type="radio" id="format-thermal" name="print-format" value="thermal"> Impresora Térmica (80mm)</label>
+        <div class="container flex flex-col gap-3 text-sm text-slate-700 md:flex-row md:items-center md:justify-between">
+            <fieldset class="flex flex-wrap gap-4">
+                <legend class="text-xs font-semibold uppercase tracking-wide text-slate-500">Formato de Impresión</legend>
+                <label class="inline-flex items-center gap-2"><input type="radio" id="format-a4" name="print-format" value="a4" checked> Nota de Entrega (A4)</label>
+                <label class="inline-flex items-center gap-2"><input type="radio" id="format-thermal" name="print-format" value="thermal"> Impresora Térmica (80mm)</label>
             </fieldset>
-            <div class="control-buttons">
-                <a href="../index.html" role="button" class="secondary outline">Volver al Inicio</a>
-                <button class="primary" id="print-receipt-btn"><i data-feather="printer"></i> Imprimir</button>
+            <div class="control-buttons flex gap-2">
+                <a href="../index.html" role="button" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"><i data-feather="arrow-left"></i> Volver al Inicio</a>
+                <button class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700" id="print-receipt-btn"><i data-feather="printer"></i> Imprimir</button>
             </div>
         </div>
     </div>
@@ -51,8 +66,14 @@
                     <tr><th>Cotización Inicial:</th><td class="receipt-cotizacion">--</td></tr>
                 </tbody>
             </table>
-            <div class="policies-section"><h6>Políticas y Condiciones del Servicio</h6><ul class="receipt-politicas"></ul></div>
-            <footer class="receipt-footer"><p>Firma del Cliente: _________________________</p><small>He leído y acepto las condiciones del servicio.</small></footer>
+            <div class="policies-section">
+                <h6>Políticas y Condiciones del Servicio</h6>
+                <ul class="receipt-politicas"></ul>
+            </div>
+            <footer class="receipt-footer">
+                <p>Firma del Cliente: _________________________</p>
+                <small>He leído y acepto las condiciones del servicio.</small>
+            </footer>
             <div class="barcode-bottom"><canvas class="barcode"></canvas></div>
         </div>
 
@@ -68,7 +89,10 @@
             <p><strong>Fecha:</strong> <span class="receipt-fecha">--</span></p>
             <p><strong>Cliente:</strong> <span class="receipt-cliente">--</span></p>
             <p><strong>Equipo:</strong> <span class="receipt-equipo">--</span></p>
-            <hr class="dashed"><p><strong>Falla Reportada:</strong></p><p class="receipt-falla">--</p><hr class="dashed">
+            <hr class="dashed">
+            <p><strong>Falla Reportada:</strong></p>
+            <p class="receipt-falla">--</p>
+            <hr class="dashed">
             <div class="policies-section"><ul class="receipt-politicas"></ul></div>
             <div class="barcode-bottom"><canvas class="barcode"></canvas></div>
         </div>

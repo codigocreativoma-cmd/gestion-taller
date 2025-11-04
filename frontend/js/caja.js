@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('overlay');
     const logoutBtn = document.getElementById('logout-btn');
     const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDesktop = document.getElementById('theme-toggle-desktop');
     const htmlElement = document.documentElement;
 
     const productSearchInput = document.getElementById('product-search-input');
@@ -34,26 +35,49 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTicket = [];
 
     // --- LÓGICA DEL PANEL (UI) ---
-    const toggleMenu = () => { sidebar.classList.toggle('is-open'); overlay.classList.toggle('is-visible'); };
+    const toggleMenu = () => {
+        sidebar.classList.toggle('is-open');
+        if (!overlay) return;
+        const isOpen = sidebar.classList.contains('is-open');
+        overlay.classList.toggle('is-visible', isOpen);
+        overlay.classList.toggle('hidden', !isOpen);
+    };
     if (hamburgerMenu) hamburgerMenu.addEventListener('click', toggleMenu);
     if (overlay) overlay.addEventListener('click', toggleMenu);
-    const applyTheme = (theme) => {
-        htmlElement.setAttribute('data-theme', theme);
-        if (themeToggle) {
+
+    const updateThemeIcons = (theme) => {
+        [themeToggle, themeToggleDesktop].filter(Boolean).forEach(button => {
             const newIcon = document.createElement('i');
             newIcon.setAttribute('data-feather', theme === 'dark' ? 'sun' : 'moon');
-            themeToggle.innerHTML = '';
-            themeToggle.appendChild(newIcon);
+            button.innerHTML = '';
+            button.appendChild(newIcon);
+        });
+    };
+
+    const applyTheme = (theme) => {
+        if (theme === 'dark') {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
         }
+        updateThemeIcons(theme);
         feather.replace();
     };
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            const newTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', newTheme);
-            applyTheme(newTheme);
-        });
-    }
+
+    const storedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(storedTheme);
+
+    const handleThemeToggle = () => {
+        const newTheme = htmlElement.classList.contains('dark') ? 'light' : 'dark';
+        localStorage.setItem('theme', newTheme);
+        applyTheme(newTheme);
+    };
+
+    [themeToggle, themeToggleDesktop].forEach(toggle => {
+        if (toggle) {
+            toggle.addEventListener('click', handleThemeToggle);
+        }
+    });
     if (logoutBtn) {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -273,7 +297,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- LÓGICA DE INICIALIZACIÓN ---
     const initializePage = () => {
-        applyTheme(localStorage.getItem('theme') || 'light');
         const pendingItemJSON = sessionStorage.getItem('pendingSaleItem');
         if (pendingItemJSON) {
             try {

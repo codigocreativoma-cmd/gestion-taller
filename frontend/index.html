@@ -1,113 +1,223 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Gestión - Taller</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        primary: {
+                            500: '#4f46e5',
+                            600: '#4338ca',
+                            700: '#3730a3'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
     <link rel="stylesheet" href="css/custom.css">
 </head>
-<body>
-    <div class="overlay" id="overlay"></div>
+<body class="h-full bg-slate-100 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-100">
+    <div id="overlay" class="fixed inset-0 z-30 hidden bg-slate-900/60"></div>
 
-    <nav class="sidebar" id="sidebar">
-        <header class="sidebar-header">
-            <img src="img/logo.png" alt="Logo ServiTech" class="sidebar-logo">
+    <nav id="sidebar" class="sidebar fixed inset-y-0 left-0 z-40 flex w-72 transform flex-col border-r border-slate-200 bg-white shadow-xl transition-transform duration-300 dark:border-slate-700 dark:bg-slate-800 lg:translate-x-0">
+        <header class="flex h-20 items-center justify-center border-b border-slate-200 px-6 dark:border-slate-700">
+            <img src="img/logo.png" alt="Logo ServiTech" class="sidebar-logo h-12 w-auto">
         </header>
-        <ul class="sidebar-nav">
-            <li><a href="index.html" class="active"><i data-feather="clipboard"></i> Órdenes</a></li>
-            <li><a href="html/inventario.html"><i data-feather="package"></i> Inventario</a></li>
-            <li><a href="html/proveedores.html"><i data-feather="truck"></i> Proveedores</a></li>
-            <li><a href="html/cuentas-pagar.html"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
-            <li><a href="html/caja.html"><i data-feather="dollar-sign"></i> Caja</a></li>
-            <li><a href="html/reportes.html"><i data-feather="bar-chart-2"></i> Reportes</a></li>
-            <li><a href="html/configuracion.html"><i data-feather="settings"></i> Configuración</a></li>
+        <ul class="flex flex-1 flex-col gap-1 px-4 py-6 text-sm font-medium">
+            <li><a href="index.html" class="nav-link active"><i data-feather="clipboard"></i> Órdenes</a></li>
+            <li><a href="html/inventario.html" class="nav-link"><i data-feather="package"></i> Inventario</a></li>
+            <li><a href="html/proveedores.html" class="nav-link"><i data-feather="truck"></i> Proveedores</a></li>
+            <li><a href="html/cuentas-pagar.html" class="nav-link"><i data-feather="credit-card"></i> Cuentas por Pagar</a></li>
+            <li><a href="html/caja.html" class="nav-link"><i data-feather="dollar-sign"></i> Caja</a></li>
+            <li><a href="html/reportes.html" class="nav-link"><i data-feather="bar-chart-2"></i> Reportes</a></li>
+            <li><a href="html/configuracion.html" class="nav-link"><i data-feather="settings"></i> Configuración</a></li>
         </ul>
-        <footer class="sidebar-footer">
-            <a href="#" id="logout-btn" role="button" class="contrast outline"><i data-feather="log-out"></i> Cerrar Sesión</a>
+        <footer class="border-t border-slate-200 px-4 py-6 dark:border-slate-700">
+            <button id="logout-btn" class="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" type="button"><i data-feather="log-out"></i> Cerrar Sesión</button>
         </footer>
     </nav>
 
-    <div class="main-content">
-        <header class="top-header">
-            <button class="hamburger" id="hamburger-menu" aria-label="Abrir menú"><i data-feather="menu"></i></button>
-            <img src="img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo">
-            <div class="mobile-header-actions">
-                <button class="add-btn-mobile js-show-form" aria-label="Crear nueva orden"><i data-feather="plus"></i></button>
-                <button id="theme-toggle" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
+    <div class="lg:ml-72">
+        <header class="top-header flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:hidden">
+            <div class="flex items-center gap-2">
+                <button id="hamburger-menu" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Abrir menú"><i data-feather="menu"></i></button>
+                <img src="img/logo.png" alt="Logo ServiTech" class="sidebar-logo mobile-logo h-10 w-auto">
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="js-show-form rounded-lg bg-primary-600 p-2 text-white shadow hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500" aria-label="Crear nueva orden"><i data-feather="plus"></i></button>
+                <button id="theme-toggle" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100" aria-label="Cambiar tema"><i data-feather="moon"></i></button>
             </div>
         </header>
 
-        <main class="container">
-            <article id="form-section">
-                <header class="page-header">
-                    <h2>Registrar Nueva Orden</h2>
-                    <button class="secondary outline js-hide-form"><i data-feather="x"></i> Cancelar</button>
+        <main class="main-content px-4 py-6 lg:px-10 lg:py-8">
+            <article id="form-section" class="hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <header class="flex flex-col gap-4 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-700">
+                    <h2 class="text-2xl font-semibold">Registrar Nueva Orden</h2>
+                    <button class="js-hide-form inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" type="button"><i data-feather="x"></i> Cancelar</button>
                 </header>
-                <form id="orden-form">
-                    <label for="taller">Taller / Sucursal de Recepción</label>
-                    <select id="taller" name="taller" required>
-                        <option value="Taller Principal" selected>Taller Principal</option>
-                        <option value="Sucursal Centro">Sucursal Centro</option>
-                    </select>
-                    <hr>
-                    <div class="form-section-grid">
-                        <fieldset><legend>Datos del Cliente</legend><label>Nombre Completo<input type="text" name="cliente_nombre" required></label><div class="grid"><label>Teléfono<input type="tel" name="cliente_telefono"></label><label>Email<input type="email" name="cliente_email"></label></div></fieldset>
-                        <fieldset><legend>Datos del Equipo</legend>
-                            <div class="grid"><label>Marca<input type="text" name="equipo_marca"></label><label>Modelo<input type="text" name="equipo_modelo"></label></div>
-                            <div class="grid">
-                                <label>IMEI / Serial<input type="text" name="imei_serial"></label>
-                                <div>
-                                    <label>Patrón / Contraseña</label>
-                                    <input type="text" name="desbloqueo" id="desbloqueo-input">
-                                </div>
+                <form id="orden-form" class="mt-6 space-y-6">
+                    <div>
+                        <label for="taller" class="mb-2 block text-sm font-semibold">Taller / Sucursal de Recepción</label>
+                        <select id="taller" name="taller" required class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                            <option value="Taller Principal" selected>Taller Principal</option>
+                            <option value="Sucursal Centro">Sucursal Centro</option>
+                        </select>
+                    </div>
+
+                    <div class="grid gap-6 lg:grid-cols-2">
+                        <fieldset class="space-y-4 rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
+                            <legend class="px-2 text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Datos del Cliente</legend>
+                            <label class="block text-sm font-medium">Nombre Completo
+                                <input type="text" name="cliente_nombre" required class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                            </label>
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <label class="block text-sm font-medium">Teléfono
+                                    <input type="tel" name="cliente_telefono" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                                </label>
+                                <label class="block text-sm font-medium">Email
+                                    <input type="email" name="cliente_email" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                                </label>
                             </div>
-                            <div class="pattern-lock-container">
-                                <button type="button" class="secondary outline small-btn" id="draw-pattern-btn"><i data-feather="grid"></i> Dibujar Patrón</button>
+                        </fieldset>
+
+                        <fieldset class="space-y-4 rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
+                            <legend class="px-2 text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Datos del Equipo</legend>
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <label class="block text-sm font-medium">Marca
+                                    <input type="text" name="equipo_marca" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                                </label>
+                                <label class="block text-sm font-medium">Modelo
+                                    <input type="text" name="equipo_modelo" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                                </label>
+                            </div>
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <label class="block text-sm font-medium">IMEI / Serial
+                                    <input type="text" name="imei_serial" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                                </label>
+                                <div>
+                                    <label class="block text-sm font-medium">Patrón / Contraseña</label>
+                                    <input type="text" name="desbloqueo" id="desbloqueo-input" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                                    <div class="pattern-lock-container mt-3">
+                                        <button type="button" id="draw-pattern-btn" class="inline-flex items-center gap-2 rounded-lg border border-primary-500 px-3 py-2 text-sm font-medium text-primary-600 transition hover:bg-primary-50 dark:border-primary-500 dark:text-primary-300 dark:hover:bg-slate-900"><i data-feather="grid"></i> Dibujar Patrón</button>
+                                    </div>
+                                </div>
                             </div>
                         </fieldset>
                     </div>
-                    <label>Falla Reportada por el Cliente</label><textarea name="falla_reportada" required rows="3"></textarea>
-                    <label>Accesorios Incluidos (cargador, SIM, etc.)</label><input type="text" name="accesorios"><hr>
-                    <h6><i data-feather="check-square"></i> Detalles Estéticos</h6>
-                    <fieldset class="detalles-grid"><label><input type="checkbox" name="detalles_esteticos" value="Pantalla Rayada"> Pantalla Rayada</label><label><input type="checkbox" name="detalles_esteticos" value="Pantalla Rota"> Pantalla Rota</label><label><input type="checkbox" name="detalles_esteticos" value="Carcasa Rayada"> Carcasa Rayada</label><label><input type="checkbox" name="detalles_esteticos" value="Golpes en Esquinas"> Golpes en Esquinas</label><label><input type="checkbox" name="detalles_esteticos" value="Signos de Humedad"> Signos de Humedad</label><label><input type="checkbox" id="otro-detalle-check"> Otro...</label></fieldset><div id="otro-detalle-textarea-container" class="hidden"><label>Describa el otro detalle</label><textarea name="otro_detalle"></textarea></div><div class="form-section-grid"><fieldset><legend><i data-feather="camera"></i> Evidencia Fotográfica</legend><div id="fotos-preview-container"></div><input type="file" id="fotos-input" multiple accept="image/*" class="hidden"><button type="button" role="button" class="outline" id="add-foto-button"><i data-feather="plus"></i> Añadir Foto</button></fieldset><fieldset><legend><i data-feather="dollar-sign"></i> Cotización</legend><label>Cotización Inicial (Opcional)<input type="number" name="cotizacion_inicial" step="0.01" placeholder="0.00"></label></fieldset></div>
-                    <hr>
-                    <button type="submit" class="primary">Crear Orden de Servicio</button>
+
+                    <div class="space-y-4">
+                        <label class="block text-sm font-medium">Falla Reportada por el Cliente
+                            <textarea name="falla_reportada" rows="3" required class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900"></textarea>
+                        </label>
+                        <label class="block text-sm font-medium">Accesorios Incluidos (cargador, SIM, etc.)
+                            <input type="text" name="accesorios" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                        </label>
+                    </div>
+
+                    <section class="space-y-4">
+                        <h3 class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"><i data-feather="check-square" class="h-4 w-4"></i> Detalles Estéticos</h3>
+                        <fieldset class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="detalles_esteticos" value="Pantalla Rayada" class="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"> Pantalla Rayada</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="detalles_esteticos" value="Pantalla Rota" class="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"> Pantalla Rota</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="detalles_esteticos" value="Carcasa Rayada" class="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"> Carcasa Rayada</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="detalles_esteticos" value="Golpes en Esquinas" class="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"> Golpes en Esquinas</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="detalles_esteticos" value="Signos de Humedad" class="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"> Signos de Humedad</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="otro-detalle-check" class="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"> Otro...</label>
+                        </fieldset>
+                        <div id="otro-detalle-textarea-container" class="hidden">
+                            <label class="block text-sm font-medium">Describa el otro detalle
+                                <textarea name="otro_detalle" rows="2" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900"></textarea>
+                            </label>
+                        </div>
+                    </section>
+
+                    <div class="grid gap-6 lg:grid-cols-2">
+                        <fieldset class="space-y-4 rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
+                            <legend class="px-2 text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 flex items-center gap-2"><i data-feather="camera" class="h-4 w-4"></i> Evidencia Fotográfica</legend>
+                            <div id="fotos-preview-container" class="grid gap-4 sm:grid-cols-2"></div>
+                            <input type="file" id="fotos-input" multiple accept="image/*" class="hidden">
+                            <button type="button" id="add-foto-button" class="inline-flex items-center gap-2 rounded-lg border border-primary-500 px-3 py-2 text-sm font-medium text-primary-600 transition hover:bg-primary-50 dark:border-primary-500 dark:text-primary-300 dark:hover:bg-slate-900"><i data-feather="plus"></i> Añadir Foto</button>
+                        </fieldset>
+                        <fieldset class="space-y-4 rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
+                            <legend class="px-2 text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 flex items-center gap-2"><i data-feather="dollar-sign" class="h-4 w-4"></i> Cotización</legend>
+                            <label class="block text-sm font-medium">Cotización Inicial (Opcional)
+                                <input type="number" name="cotizacion_inicial" step="0.01" placeholder="0.00" class="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-900">
+                            </label>
+                        </fieldset>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"><i data-feather="check"></i> Crear Orden de Servicio</button>
+                    </div>
                 </form>
             </article>
 
-            <article id="list-section">
-                <header class="page-header">
-                    <h2>Órdenes de Servicio</h2>
-                    <button class="primary create-order-btn js-show-form"><i data-feather="plus"></i> Crear Orden</button>
+            <article id="list-section" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <header class="flex flex-col gap-4 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-700">
+                    <div>
+                        <h2 class="text-2xl font-semibold">Órdenes de Servicio</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Revisa, gestiona y da seguimiento a las órdenes activas.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="hidden rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700 lg:inline-flex js-show-form"><i data-feather="plus"></i> Crear Orden</button>
+                        <button id="theme-toggle-desktop" class="hidden rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600 lg:inline-flex" type="button"><i data-feather="moon"></i></button>
+                    </div>
                 </header>
-                <nav class="filter-tabs">
-                    <ul>
-                        <li><a href="#" class="active" data-filter="recientes">Recientes</a></li>
-                        <li><a href="#" data-filter="pendientes">Pendientes</a></li>
-                        <li><a href="#" data-filter="en-ejecucion">En Ejecución</a></li>
-                        <li><a href="#" data-filter="completadas">Completadas</a></li>
+
+                <nav class="filter-tabs mt-6 overflow-x-auto">
+                    <ul class="flex gap-2 text-sm font-medium">
+                        <li><a href="#" class="tab-link active" data-filter="recientes">Recientes</a></li>
+                        <li><a href="#" class="tab-link" data-filter="pendientes">Pendientes</a></li>
+                        <li><a href="#" class="tab-link" data-filter="en-ejecucion">En Ejecución</a></li>
+                        <li><a href="#" class="tab-link" data-filter="completadas">Completadas</a></li>
                     </ul>
                 </nav>
-                <div class="overflow-auto">
-                    <table>
-                        <thead><tr><th class="desktop-only">ID</th><th>Equipo</th><th>Falla</th><th class="desktop-only">Cliente</th><th class="desktop-only">Recibido</th><th>Estado</th><th>Acción</th></tr></thead>
-                        <tbody id="ordenes-tbody"></tbody>
+
+                <div class="mt-6 overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
+                        <thead class="bg-slate-50 dark:bg-slate-900/40">
+                            <tr class="text-left font-semibold text-slate-500 dark:text-slate-300">
+                                <th class="desktop-only px-4 py-3">ID</th>
+                                <th class="px-4 py-3">Equipo</th>
+                                <th class="px-4 py-3">Falla</th>
+                                <th class="desktop-only px-4 py-3">Cliente</th>
+                                <th class="desktop-only px-4 py-3">Recibido</th>
+                                <th class="px-4 py-3">Estado</th>
+                                <th class="px-4 py-3 text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordenes-tbody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
                     </table>
                 </div>
             </article>
         </main>
     </div>
 
-    <dialog id="post-creation-modal">
-        <article>
-            <header><a href="#close" aria-label="Close" class="close js-close-post-creation-modal"></a><h3><i data-feather="check-circle"></i> Orden Creada con Éxito</h3></header>
+    <dialog id="post-creation-modal" class="rounded-2xl border border-slate-200 bg-white p-0 shadow-xl dark:border-slate-700 dark:bg-slate-800">
+        <article class="space-y-4 p-6">
+            <header class="flex items-start justify-between">
+                <div class="flex items-center gap-2 text-lg font-semibold text-primary-600 dark:text-primary-300"><i data-feather="check-circle"></i> Orden Creada con Éxito</div>
+                <button type="button" aria-label="Close" class="close js-close-post-creation-modal text-slate-400 transition hover:text-slate-600 dark:hover:text-slate-200">&times;</button>
+            </header>
             <p>La orden <strong>#<span id="new-order-id"></span></strong> ha sido registrada. ¿Qué deseas hacer a continuación?</p>
             <div class="hidden"><svg id="sticker-barcode"></svg></div>
-            <footer class="modal-actions-grid">
-                <button class="secondary outline js-close-post-creation-modal">Cerrar</button>
-                <button id="download-sticker-btn" class="primary"><i data-feather="tag"></i> Descargar Etiqueta</button>
-                <a href="#" id="view-receipt-btn" role="button" class="primary"><i data-feather="file-text"></i> Ver Recibo</a>
+            <footer class="grid gap-3 sm:grid-cols-3">
+                <button type="button" class="js-close-post-creation-modal inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700">Cerrar</button>
+                <button id="download-sticker-btn" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"><i data-feather="tag"></i> Descargar Etiqueta</button>
+                <a href="#" id="view-receipt-btn" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"><i data-feather="file-text"></i> Ver Recibo</a>
             </footer>
         </article>
     </dialog>
@@ -118,14 +228,20 @@
 
     <div id="pattern-wrapper" class="hidden">
         <div id="pattern-grid">
-            <div class="pattern-dot" data-id="1"></div><div class="pattern-dot" data-id="2"></div><div class="pattern-dot" data-id="3"></div>
-            <div class="pattern-dot" data-id="4"></div><div class="pattern-dot" data-id="5"></div><div class="pattern-dot" data-id="6"></div>
-            <div class="pattern-dot" data-id="7"></div><div class="pattern-dot" data-id="8"></div><div class="pattern-dot" data-id="9"></div>
+            <div class="pattern-dot" data-id="1"></div>
+            <div class="pattern-dot" data-id="2"></div>
+            <div class="pattern-dot" data-id="3"></div>
+            <div class="pattern-dot" data-id="4"></div>
+            <div class="pattern-dot" data-id="5"></div>
+            <div class="pattern-dot" data-id="6"></div>
+            <div class="pattern-dot" data-id="7"></div>
+            <div class="pattern-dot" data-id="8"></div>
+            <div class="pattern-dot" data-id="9"></div>
         </div>
         <canvas id="pattern-canvas"></canvas>
         <div class="pattern-actions">
-            <button type="button" class="contrast outline small-btn" id="clear-pattern-btn">Limpiar</button>
-            <button type="button" class="primary small-btn" id="save-pattern-btn">Guardar</button>
+            <button type="button" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700" id="clear-pattern-btn">Limpiar</button>
+            <button type="button" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white shadow transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500" id="save-pattern-btn">Guardar</button>
         </div>
     </div>
 

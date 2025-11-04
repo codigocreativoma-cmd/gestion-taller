@@ -1,19 +1,35 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Factura de Venta - ServiTech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="../css/custom.css">
     <link rel="stylesheet" href="../css/factura.css">
 </head>
-<body class="receipt-page">
-
+<body class="receipt-page bg-slate-100 text-slate-900 antialiased">
     <div class="print-controls">
-        <div class="container">
-            <p>Factura generada. ¿Deseas imprimir?</p>
-            <div class="control-buttons">
-                <a href="caja.html" role="button" class="secondary outline">Volver a la Caja</a>
-                <button class="primary" id="print-receipt-btn">Imprimir Factura</button>
+        <div class="container flex flex-col gap-3 text-sm text-slate-700 sm:flex-row sm:items-center sm:justify-between">
+            <p class="font-medium">Factura generada. ¿Deseas imprimir?</p>
+            <div class="control-buttons flex gap-2">
+                <a href="caja.html" role="button" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"><i data-feather="arrow-left"></i> Volver a la Caja</a>
+                <button class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-700" id="print-receipt-btn"><i data-feather="printer"></i> Imprimir Factura</button>
             </div>
         </div>
     </div>
@@ -33,7 +49,7 @@
             </div>
             <p><strong>Cliente:</strong> <span id="factura-cliente">--</span></p>
             <hr class="dashed">
-            
+
             <table class="items-table">
                 <thead>
                     <tr>
@@ -42,14 +58,14 @@
                         <th>Subtotal</th>
                     </tr>
                 </thead>
-                <tbody id="factura-items">
-                    </tbody>
+                <tbody id="factura-items"></tbody>
             </table>
 
             <hr class="dashed">
 
             <div class="totals-grid">
-                <div></div> <div>
+                <div></div>
+                <div>
                     <p><strong>Subtotal:</strong> <span id="factura-subtotal">--</span></p>
                     <p><strong>TOTAL:</strong> <strong id="factura-total">--</strong></p>
                 </div>
@@ -62,6 +78,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="../js/factura.js"></script>
 </body>
